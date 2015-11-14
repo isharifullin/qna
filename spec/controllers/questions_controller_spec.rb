@@ -65,6 +65,7 @@ RSpec.describe QuestionsController, type: :controller do
 
   		it 'redirects to show view' do
   			post :create, question: attributes_for(:question)
+        
   			expect(response).to redirect_to question_path(assigns(:question))
   		end
   	end
@@ -76,6 +77,7 @@ RSpec.describe QuestionsController, type: :controller do
 
   		 it 're-renders new view' do
   			post :create, question: attributes_for(:invalid_question)
+
   			expect(response).to render_template :new
   		end
   	end
@@ -87,12 +89,14 @@ RSpec.describe QuestionsController, type: :controller do
   	context 'with vilid attributes' do
   		it 'assigns requested question to @question' do
 				patch :update, id: question, question: attributes_for(:question)
+
 				expect(assigns(:question)).to eq question  		
   		end
 
   		it 'changes question attributes' do
 				patch :update, id: question, question: {title: 'new title', body: 'new body'}
 				question.reload
+
 				expect(question.title).to eq 'new title'	
 				expect(question.body).to eq 'new body'
   		end
@@ -106,9 +110,11 @@ RSpec.describe QuestionsController, type: :controller do
   	context 'with invilid attributes' do
   		before { patch :update, id: question, question: {title: 'new title', body: nil} }
   		it 'does not change question attributes' do
-				question.reload
-				expect(question.title).to eq 'MyString'	
-				expect(question.body).to eq 'MyText'
+				old_question = question
+        question.reload
+
+				expect(question.title).to eq old_question.title	
+				expect(question.body).to eq old_question.body
   		end
 
   		it 're-renders edit view' do
@@ -127,6 +133,7 @@ RSpec.describe QuestionsController, type: :controller do
 
 		it 'redirects to index view' do
 			delete :destroy, id: question
+
 			expect(response).to redirect_to questions_path
 		end
 	end
