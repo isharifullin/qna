@@ -7,7 +7,7 @@ feature 'User browses a question', %q{
 } do 
 
   given!(:user) { create(:user) }
-  given!(:question) { create(:question) }
+  given!(:question) { create(:question, user: user) }
   given!(:answers) { create_list(:answer, 3, question: question, user: user) }
   scenario 'User browses a question' do
     visit question_path(question)

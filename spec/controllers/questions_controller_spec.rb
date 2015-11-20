@@ -1,10 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-	 let(:question) { create(:question) }
+	 let(:user) { create(:user) }
+   let(:question) { create(:question, user: user) }
 
   describe 'GET #index' do
-  	let(:questions) { create_list(:question, 2) }
+  	let(:questions) { create_list(:question, 2, user: user) }
   	
     before { get :index }
 
@@ -56,85 +57,118 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'POST #create' do
-    sign_in_user
+    context 'authenticated user' do
+      sign_in_user
 
-  	context 'with vilid attributes' do
-  		it 'save new question in the database' do
-  			expect { post :create, question: attributes_for(:question) }.to change(Question, :count).by(1)
-  		end
+    	context 'with vilid attributes' do
+    		it 'save new question in the database' do
+    			expect { post :create, question: attributes_for(:question) }.to change(Question, :count).by(1)
+    		end
 
-  		it 'redirects to show view' do
-  			post :create, question: attributes_for(:question)
-        
-  			expect(response).to redirect_to question_path(assigns(:question))
-  		end
-  	end
+    		it 'redirects to show view' do
+    			post :create, question: attributes_for(:question)
+          
+    			expect(response).to redirect_to question_path(assigns(:question))
+    		end
+    	end
 
-  	context 'with invalid attributes' do
-  		it 'does not save the question' do
-  			expect { post :create, question: attributes_for(:invalid_question) }.to_not change(Question, :count)
-  		end
+    	context 'with invalid attributes' do
+    		it 'does not save the question' do
+    			expect { post :create, user: @user, question: attributes_for(:invalid_question) }.to_not change(Question, :count)
+    		end
 
-  		 it 're-renders new view' do
-  			post :create, question: attributes_for(:invalid_question)
+    		 it 're-renders new view' do
+    			post :create, user: @user, question: attributes_for(:invalid_question)
 
-  			expect(response).to render_template :new
-  		end
-  	end
+    			expect(response).to render_template :new
+    		end
+    	end
+    end
+
+    context 'non-authenticated user' do
+      it 'does not save the question' do
+        expect { post :create, question: attributes_for(:question) }.to_not change(Question, :count)
+      end
+    end
   end
 
   describe 'PATCH #update' do
-    sign_in_user
+    context 'authenticated user' do
+      sign_in_user
 
-  	context 'with vilid attributes' do
-  		it 'assigns requested question to @question' do
-				patch :update, id: question, question: attributes_for(:question)
+      context 'with vilid attributes' do
+        it 'assigns requested question to @question' do
+          patch :update, id: question, question: attributes_for(:question)
+          expect(assigns(:question)).to eq question     
+        end
 
-				expect(assigns(:question)).to eq question  		
-  		end
+        it 'changes question attributes' do
+          patch :update, id: question, question: {title: 'new title', body: 'new body'}
+          question.reload
+          expect(question.title).to eq 'new title'  
+          expect(question.body).to eq 'new body'
+        end
 
-  		it 'changes question attributes' do
-				patch :update, id: question, question: {title: 'new title', body: 'new body'}
-				question.reload
+        it 'redirects to the updated question' do
+          patch :update, id: question, question: attributes_for(:question)
+          expect(response).to redirect_to question
+        end
+      end
 
-				expect(question.title).to eq 'new title'	
-				expect(question.body).to eq 'new body'
-  		end
+      context 'with invilid attributes' do
+        before { patch :update, id: question, question: {title: 'new title', body: nil} }
+        it 'does not change question attributes' do
+          question.reload
+          expect(question.title).to eq 'MyString' 
+          expect(question.body).to eq 'MyText'
+        end
 
-  		it 'redirects to the updated question' do
-				patch :update, id: question, question: attributes_for(:question)
-  			expect(response).to redirect_to question
-  		end
-  	end
+        it 're-renders edit view' do
+          expect(response).to render_template :edit
+        end
+      end
+    end
 
-  	context 'with invilid attributes' do
-  		before { patch :update, id: question, question: {title: 'new title', body: nil} }
-  		it 'does not change question attributes' do
-				old_question = question
+    context 'non-authenticated user' do
+      it 'does not change question attributes' do
+        patch :update, id: question, question: {title: 'new title', body: 'new body'}
         question.reload
-
-				expect(question.title).to eq old_question.title	
-				expect(question.body).to eq old_question.body
-  		end
-
-  		it 're-renders edit view' do
-  			expect(response).to render_template :edit
-  		end
-  	end
+        expect(question.title).to eq 'MyString' 
+        expect(question.body).to eq 'MyText'
+      end
+    end
   end
 
   describe 'DELETE #destroy' do
-    sign_in_user 
-    
-  	before { question }
-		it 'deletes question' do
-			expect { delete :destroy, id: question }.to change(Question, :count).by(-1)
-		end
+    context 'authenticated user' do
+      sign_in_user
+      
+      context 'user is owner question' do
+        it 'deletes question' do
+        question = create(:question, user: @user)
+          expect { delete :destroy, id: question }.to change(Question, :count).by(-1)
+        end
 
-		it 'redirects to index view' do
-			delete :destroy, id: question
+        it 'redirects to index view' do
+        question = create(:question, user: @user)
+          delete :destroy, id: question
+          expect(response).to redirect_to questions_path
+        end
+      end
 
-			expect(response).to redirect_to questions_path
-		end
-	end
+      context 'user is not owner question' do
+        
+        it 'does not delete question' do
+        anothers_question = create(:question, user: user)
+          expect { delete :destroy, id: anothers_question }.to_not change(Question, :count)
+        end
+
+        it 'redirects to question view' do
+        anothers_question = create(:question, user: user)
+          delete :destroy, id: anothers_question
+          expect(response).to redirect_to root_path
+        end
+      end
+    end
+  end
 end

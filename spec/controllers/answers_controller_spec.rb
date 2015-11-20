@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-	let(:question) { create(:question) }
+	let(:user) {create(:user)}
+	let(:question) { create(:question, user: user) }
 
 	describe 'POST #create' do
 		context 'authenticated user' do
@@ -41,29 +42,28 @@ RSpec.describe AnswersController, type: :controller do
 		sign_in_user
 
 		context 'user is owner answer' do
-			let(:answer) { create(:answer, user: @user, question: question)}
-
 			it 'delete answer from database' do
-				expect(answer.user).to eq @user #Если убрать эту строку, тест не проходит (вопрос не удаляется). Прошу объяснить в чем проблема.
+				answer = create(:answer, user: @user, question: question)
 				expect { delete :destroy, question_id: question, id: answer }.to change(Answer, :count).by(-1)
 			end
 
 			it 'redirects to question view' do
+				answer = create(:answer, user: @user, question: question)	
 				delete :destroy, question_id: question, id: answer
 				expect(response).to redirect_to question_path(assigns(:question))
 			end
 		end
 
 		context 'user is not owner answer' do
-			let(:user) {create(:user)}
-			let(:answer) { create(:answer, user: user, question: question)}
 
 			it 'does not delete answer' do
-				expect { delete :destroy, question_id: question, id: answer }.to_not change(Answer, :count)
+				anothers_answer = create(:answer, user: user, question: question)	
+				expect { delete :destroy, question_id: question, id: anothers_answer }.to_not change(Answer, :count)
 			end
 
 			it 'redirects to question view' do
-				delete :destroy, question_id: question, id: answer
+				anothers_answer = create(:answer, user: user, question: question)
+				delete :destroy, question_id: question, id: anothers_answer
 				expect(response).to redirect_to question
 			end
 		end

@@ -10,7 +10,7 @@ feature 'User sign out', %q{
   scenario 'Authenticated user try to sign out' do
     sign_in(user)
 
-    click_on 'Sign out'
+    click_link 'sign_out_link'
 
     expect(page).to have_content 'Signed out successfully.'
     expect(current_path).to eq root_path
