@@ -1,8 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-	let(:user) {create(:user)}
-	let(:question) { create(:question, user: user) }
+	let(:question) { create(:question) }
+	let(:answer) { create(:answer, user: @user, question: question)	 }
+	let(:anothers_answer) { create(:answer, question: question) }
 
 	describe 'POST #create' do
 		context 'authenticated user' do
@@ -42,27 +43,26 @@ RSpec.describe AnswersController, type: :controller do
 		sign_in_user
 
 		context 'user is owner answer' do
+			before { answer }
+
 			it 'delete answer from database' do
-				answer = create(:answer, user: @user, question: question)
 				expect { delete :destroy, question_id: question, id: answer }.to change(Answer, :count).by(-1)
 			end
 
 			it 'redirects to question view' do
-				answer = create(:answer, user: @user, question: question)	
 				delete :destroy, question_id: question, id: answer
 				expect(response).to redirect_to question_path(assigns(:question))
 			end
 		end
 
 		context 'user is not owner answer' do
+			before { anothers_answer }
 
 			it 'does not delete answer' do
-				anothers_answer = create(:answer, user: user, question: question)	
 				expect { delete :destroy, question_id: question, id: anothers_answer }.to_not change(Answer, :count)
 			end
 
 			it 'redirects to question view' do
-				anothers_answer = create(:answer, user: user, question: question)
 				delete :destroy, question_id: question, id: anothers_answer
 				expect(response).to redirect_to question
 			end

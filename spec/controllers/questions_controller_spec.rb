@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-	 let(:user) { create(:user) }
-   let(:question) { create(:question, user: user) }
+  let(:question) { create(:question, user: @user) }
+  let(:anothers_question) { create(:question) }
 
   describe 'GET #index' do
-  	let(:questions) { create_list(:question, 2, user: user) }
+  	let(:questions) { create_list(:question, 2) }
   	
     before { get :index }
 
@@ -19,10 +19,10 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #show' do
-  	before { get :show, id: question }
+  	before { get :show, id: anothers_question }
 
   	it 'assigns requested question to @question' do
-			expect(assigns(:question)).to eq question  		
+			expect(assigns(:question)).to eq anothers_question  		
   	end
   	
   	it 'renders show view' do
@@ -74,11 +74,11 @@ RSpec.describe QuestionsController, type: :controller do
 
     	context 'with invalid attributes' do
     		it 'does not save the question' do
-    			expect { post :create, user: @user, question: attributes_for(:invalid_question) }.to_not change(Question, :count)
+    			expect { post :create, question: attributes_for(:invalid_question) }.to_not change(Question, :count)
     		end
 
     		 it 're-renders new view' do
-    			post :create, user: @user, question: attributes_for(:invalid_question)
+    			post :create, question: attributes_for(:invalid_question)
 
     			expect(response).to render_template :new
     		end
@@ -93,6 +93,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH #update' do
+
     context 'authenticated user' do
       sign_in_user
 
@@ -127,14 +128,23 @@ RSpec.describe QuestionsController, type: :controller do
           expect(response).to render_template :edit
         end
       end
+
+      context 'user is not owner question' do
+        it 'does not change question attributes' do
+          patch :update, id: anothers_question, question: {title: 'new title', body: 'new body'}
+          anothers_question.reload
+          expect(question.title).to_not eq 'new title'  
+          expect(question.body).to_not eq 'new body'
+        end
+      end
     end
 
     context 'non-authenticated user' do
       it 'does not change question attributes' do
-        patch :update, id: question, question: {title: 'new title', body: 'new body'}
-        question.reload
-        expect(question.title).to eq 'MyString' 
-        expect(question.body).to eq 'MyText'
+        patch :update, id: anothers_question, question: {title: 'new title', body: 'new body'}
+        anothers_question.reload
+        expect(anothers_question.title).to eq 'MyString' 
+        expect(anothers_question.body).to eq 'MyText'
       end
     end
   end
@@ -144,27 +154,26 @@ RSpec.describe QuestionsController, type: :controller do
       sign_in_user
       
       context 'user is owner question' do
+        before { question }
+
         it 'deletes question' do
-        question = create(:question, user: @user)
           expect { delete :destroy, id: question }.to change(Question, :count).by(-1)
         end
 
         it 'redirects to index view' do
-        question = create(:question, user: @user)
           delete :destroy, id: question
           expect(response).to redirect_to questions_path
         end
       end
 
       context 'user is not owner question' do
-        
+        before { anothers_question }
+
         it 'does not delete question' do
-        anothers_question = create(:question, user: user)
           expect { delete :destroy, id: anothers_question }.to_not change(Question, :count)
         end
 
         it 'redirects to question view' do
-        anothers_question = create(:question, user: user)
           delete :destroy, id: anothers_question
           expect(response).to redirect_to root_path
         end
