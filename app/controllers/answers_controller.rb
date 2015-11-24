@@ -2,6 +2,7 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
 	before_action :load_question
 	before_action :verify_owner, only: [:destroy]
+  
 	def new
 		@answer = @question.answers.new
 	end
