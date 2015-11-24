@@ -119,9 +119,10 @@ RSpec.describe QuestionsController, type: :controller do
       context 'with invilid attributes' do
         before { patch :update, id: question, question: {title: 'new title', body: nil} }
         it 'does not change question attributes' do
+          old_title = question.title
           question.reload
-          expect(question.title).to eq 'MyString' 
-          expect(question.body).to eq 'MyText'
+          expect(question.title).to eq old_title 
+          expect(question.body).to eq 'MyQuestionBody'
         end
 
         it 're-renders edit view' do
@@ -142,9 +143,10 @@ RSpec.describe QuestionsController, type: :controller do
     context 'non-authenticated user' do
       it 'does not change question attributes' do
         patch :update, id: anothers_question, question: {title: 'new title', body: 'new body'}
+        old_title = anothers_question.title
         anothers_question.reload
-        expect(anothers_question.title).to eq 'MyString' 
-        expect(anothers_question.body).to eq 'MyText'
+        expect(anothers_question.title).to eq old_title 
+        expect(anothers_question.body).to eq 'MyQuestionBody'
       end
     end
   end

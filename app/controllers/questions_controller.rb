@@ -51,9 +51,7 @@ class QuestionsController < ApplicationController
   end
 
   def verify_owner
-    unless current_user == @question.user
-      redirect_to root_path      
-    end
+    redirect_to root_path  unless current_user.id == @question.user_id
   end
 
   def question_params

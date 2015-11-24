@@ -9,9 +9,9 @@ html
     
     = render 'layouts/header'
       
-    p class="notice" 
+    alert.alert-success
       == notice 
-    p class="alert"
+    alert.alert-warning
       == alert 
-
-    == yield
+    .container
+      == yield

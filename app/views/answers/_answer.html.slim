@@ -1,2 +1,3 @@
-= answer.body
-= link_to 'Delete', question_answer_path(answer.question, answer), method: :delete, id: "destroy_answer_#{answer.id}" if user_authorized_for(answer)
+.media-body
+  = answer.body
+  = link_to 'Delete', question_answer_path(answer.question, answer), method: :delete, id: "destroy_answer_#{answer.id}" if user_authorized_for(answer)

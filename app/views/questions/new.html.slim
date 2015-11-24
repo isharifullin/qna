@@ -1,6 +1,9 @@
-= form_for @question do |f|
-	= f.label :title
-	= f.text_field :title
-	= f.label :body
-	= f.text_area :body
-	= f.submit 'Create'
+  = form_for @question do |f|
+    .input-group-addon
+      = f.label :title
+    = f.text_field :title, class: 'form-control'
+    .input-group-addon
+      = f.label :body
+    = f.text_area :body, class: 'form-control'
+    btn.btn-default
+      = f.submit 'Create'

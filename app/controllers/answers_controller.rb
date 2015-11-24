@@ -36,9 +36,7 @@ class AnswersController < ApplicationController
 
   def verify_owner
   	load_answer
-    unless current_user == @answer.user
-      redirect_to @question      
-    end
+    redirect_to @question unless current_user.id == @answer.user_id
   end
 
 	def answer_params

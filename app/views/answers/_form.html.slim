@@ -1,4 +1,6 @@
 = form_for [@question, @answer]  do |f|
-  = f.label :body
-  = f.text_area :body
-  = f.submit 'Post your answer'
+  .input-group-addon
+    = f.label :body
+  = f.text_area :body, class: 'form-control'
+  btn.btn-default
+    = f.submit 'Post your answer'
