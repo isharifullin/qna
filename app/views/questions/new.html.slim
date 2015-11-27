@@ -4,6 +4,6 @@
     = f.text_field :title, class: 'form-control'
     .input-group-addon
       = f.label :body
-    = f.text_area :body, class: 'form-control'
+    = f.text_area :body, row: 10, class: 'form-control', rows: 5
     btn.btn-default
       = f.submit 'Create'

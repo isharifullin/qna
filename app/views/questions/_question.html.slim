@@ -1,19 +1,26 @@
-.question
-  .media-body
-    h4.media-heading
+.container.question
+  .row 
+    h3.media-heading { margin-left:20px; }
       = question.title
-    = question.body
-  - if user_authorized_for(question)
-    = link_to 'Delete', question_path(question), method: :delete, id: "destroy_question_link" 
-    = link_to 'Edit', '', id: 'edit_question_link', data: {question_id: question.id} 
+  .row 
+    .col-xs-1.vote
+      'vote
+    .col-xs-11
+      = question.body
+      - if user_authorized_for(question)
+        p
+          => link_to 'Edit', '', id: 'edit_question_link', data: {question_id: question.id} 
+          = link_to 'Delete', question_path(question), method: :delete, id: "destroy_question_link" 
 
-    p
-      = form_for [question], remote: true,  id: 'edit_question_#{question.id}'  do |f|
-       .question-errors
-        = f.label :title
-        = f.text_field :title
-        = f.label :body
-        = f.text_area :body
-        btn.btn-default
-          = f.submit 'Save'
-      end
+        
+        = form_for [question], remote: true,  id: 'edit_question_#{question.id}'  do |f|
+          .question-errors
+          .input-group-addon
+            = f.label :title
+          = f.text_field :title, class: 'form-control'
+          .input-group-addon
+            = f.label :body
+          = f.text_area :body, class: 'form-control', rows: 5
+          btn.btn-default
+            = f.submit 'Save'
+        end

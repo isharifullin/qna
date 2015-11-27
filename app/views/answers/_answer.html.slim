@@ -1,13 +1,17 @@
-- if answer.persisted?
-  div  [id = "answer_#{answer.id}"]
-    = answer.body
-    - if user_authorized_for(answer)
-      = link_to 'Delete', question_answer_path(answer.question, answer), remote: true, method: :delete, id: "destroy_answer_#{answer.id}" 
-      = link_to 'Edit', '', class: 'edit_answer_link', data: {answer_id: answer.id} 
-      p
+- if answer.persisted? 
+  .row [id = "answer_#{answer.id}"]
+    .col-xs-1.vote
+      = link_to 'Best', ''
+    .col-xs-11
+      p = answer.body
+      - if user_authorized_for(answer)
+        => link_to 'Edit', '#', class: 'edit_answer_link', data: {answer_id: answer.id} 
+        = link_to 'Delete', question_answer_path(answer.question, answer), remote: true, method: :delete, id: "destroy_answer_#{answer.id}" 
+        
         = form_for [answer.question, answer], remote: true, id: "edit_answer_#{answer.id}"  do |f|
-          = f.label :body, 'Your answer'
-          = f.text_area :body
+          .input-group-addon
+            = f.label :body, 'Your answer'
+          = f.text_area :body, class: 'form-control', rows: 5
           btn.btn-default
             = f.submit 'Save'
         end

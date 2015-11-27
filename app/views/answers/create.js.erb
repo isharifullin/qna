@@ -4,7 +4,7 @@
   <% end %>
 <% else %>
   $('.answers').append('<%= j render @answer %>');
-  $('.form-control#answer_body').val('');
+  $('.form-control.new_answer_form#answer_body').val('');
   $('.edit_answer_link').click(function(e) {
     e.preventDefault();
     $(this).hide();
