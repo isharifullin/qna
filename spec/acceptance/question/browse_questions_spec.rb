@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'acceptance_helper'
 
 feature 'User browses a list of questions', %q{
   In order to be able to answer for questions and find questions

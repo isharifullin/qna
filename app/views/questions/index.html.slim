@@ -1,2 +1,4 @@
 media-list
-  = render @questions
+  - @questions.each do |question|
+    media-heading    
+      = link_to question.title, question

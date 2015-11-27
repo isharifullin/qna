@@ -1,3 +1,4 @@
+require 'acceptance_helper'
 
 feature 'User sign out', %q{
   In order to be able finish work

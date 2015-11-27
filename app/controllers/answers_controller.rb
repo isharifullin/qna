@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
 	before_action :load_question
-	before_action :verify_owner, only: [:destroy]
+	before_action :verify_owner, only: [:update, :destroy]
   
 	def new
 		@answer = @question.answers.new
@@ -12,6 +12,10 @@ class AnswersController < ApplicationController
 		@answer.user = current_user
 		@answer.save 
 	end
+
+  def update
+    @answer.update(answer_params)
+  end
 
 	def destroy
 	  @answer.destroy
