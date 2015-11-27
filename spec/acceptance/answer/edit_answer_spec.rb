@@ -11,12 +11,6 @@ feature 'Answer editing', %q{
   given!(:answer) {create(:answer, question: question, user: user)}
   given!(:anothers_answer) {create(:answer, question: question)}
 
-  scenario 'Non-authenticated user tries to edit answer' do
-    visit question_path(question)
-    
-    expect(page).to_not have_link 'Edit' 
-  end
-
   describe 'Authenticated user' do
     before do
       sign_in user
@@ -43,4 +37,11 @@ feature 'Answer editing', %q{
       end
     end
   end
+
+  scenario 'Non-authenticated user tries to edit answer' do
+    visit question_path(question)
+    
+    expect(page).to_not have_link 'Edit' 
+  end
+
 end

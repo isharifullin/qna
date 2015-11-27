@@ -5,9 +5,10 @@ feature 'User sign up', %q{
   As an user
   I want to be able sign up
 } do 
-  scenario 'User try to sign up' do
-    visit new_user_registration_path
 
+  before { visit new_user_registration_path }
+
+  scenario 'User try to sign up' do
     user_attributes = attributes_for(:user)
 
     fill_in 'Email', with: user_attributes[:email]
@@ -20,8 +21,6 @@ feature 'User sign up', %q{
   end
 
   scenario 'User try to sign up with invalid data' do
-    visit new_user_registration_path
-
     user_attributes = attributes_for(:invalid_user)
 
     fill_in 'Email', with: user_attributes[:email]

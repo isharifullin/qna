@@ -13,8 +13,10 @@ feature 'Destroy question', %q{
   scenario 'Authenticated user destroes own answer' do
     sign_in(user)
     visit question_path(question)
-
-    click_link "destroy_question_#{question.id}"
+    
+    within '.question' do
+      click_link 'Delete'
+    end
 
     expect(page).to have_content 'Your question successfully deleted.'
     expect(current_path).to eq questions_path
@@ -24,12 +26,16 @@ feature 'Destroy question', %q{
     sign_in(another_user)
     visit question_path(question)
 
-    expect(page).to_not have_link "destroy_question_#{question.id}"
+    within '.question' do 
+      expect(page).to_not have_link 'Delete'
+    end
   end
 
   scenario 'Non-authenticated user tries to destroy question' do
     visit question_path(question)
 
-    expect(page).to_not have_link "destroy_question_#{question.id}"
+    within '.question' do
+      expect(page).to_not have_link 'Delete'
+    end
   end
 end

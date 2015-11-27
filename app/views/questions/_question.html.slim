@@ -1,18 +1,19 @@
-.media-body
-  h4.media-heading
-    = question.title
-  = question.body
-- if user_authorized_for(question)
-  = link_to 'Delete', question_path(question), method: :delete, id: "destroy_question_#{question.id}" 
-  = link_to 'Edit', '', id: 'edit_question_link'
+.question
+  .media-body
+    h4.media-heading
+      = question.title
+    = question.body
+  - if user_authorized_for(question)
+    = link_to 'Delete', question_path(question), method: :delete, id: "destroy_question_link" 
+    = link_to 'Edit', '', id: 'edit_question_link', data: {question_id: question.id} 
 
-  p
-  = form_for [question], remote: true, class: 'edit_question'  do |f|
-   .question-errors
-    = f.label :title
-    = f.text_field :title
-    = f.label :body
-    = f.text_area :body
-    btn.btn-default
-      = f.submit 'Save'
-  end
+    p
+      = form_for [question], remote: true,  id: 'edit_question_#{question.id}'  do |f|
+       .question-errors
+        = f.label :title
+        = f.text_field :title
+        = f.label :body
+        = f.text_area :body
+        btn.btn-default
+          = f.submit 'Save'
+      end

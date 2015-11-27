@@ -6,7 +6,8 @@ ready = ->
   $('#edit_question_link').click (e) ->
     e.preventDefault();
     $(this).hide();
-    $('form.edit_question').show();
+    question_id = $(this).data('questionId');
+    $('form#edit_question_' + question_id).show();
 
 $(document).ready(ready)
 $(document).on('page:load', ready)
