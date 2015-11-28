@@ -1,6 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
 	before_action :load_question
+  before_action :verify_question_owner, only: [:make_best]
 	before_action :verify_owner, only: [:update, :destroy]
   
 	def new
@@ -21,6 +22,10 @@ class AnswersController < ApplicationController
 	  @answer.destroy
   end
 
+  def make_best
+    @answer.make_best
+  end
+
 	private
 
 	def load_question
@@ -34,6 +39,11 @@ class AnswersController < ApplicationController
   def verify_owner
   	load_answer
     redirect_to @question unless current_user.id == @answer.user_id
+  end
+
+  def verify_question_owner
+    load_answer
+    redirect_to @question unless current_user.id == @question.user_id
   end
 
 	def answer_params
