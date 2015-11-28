@@ -7,7 +7,9 @@ class Answer < ActiveRecord::Base
   default_scope { order('best DESC','created_at') } 
 
   def make_best
-    question.answers.update_all(best: false)
-    update(best: true)
+    question.transaction do
+      question.answers.update_all(best: false)
+      update(best: true)  
+    end
   end
 end
