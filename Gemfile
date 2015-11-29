@@ -14,6 +14,7 @@ gem 'slim-rails'
 gem 'devise'
 gem 'bootstrap-sass'
 gem 'carrierwave'
+gem 'remotipart'
 
 group :development, :test do
   gem 'rspec-rails'

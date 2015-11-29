@@ -4,5 +4,10 @@
     .input-group-addon
       = f.label :body, 'Your answer'
     = f.text_area :body, class: 'form-control new_answer_form'
+    p Attachments:
+    p
+    = f.fields_for :attachments do |a|
+      = a.label :file
+      = a.file_field :file
     btn.btn-default
       = f.submit 'Post your answer'
