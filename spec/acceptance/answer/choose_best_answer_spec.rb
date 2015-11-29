@@ -48,7 +48,7 @@ feature 'Make best answer', %q{
 
   scenario 'Authenticated user tries to choose best answer in anothers question' do
     sign_in another_user
-    visit question_path question
+    visit question_path(question)
       
     expect(page).to_not have_link 'Best'
   end

@@ -6,7 +6,6 @@
       = f.label :body
     => f.text_area :body, row: 10, class: 'form-control', rows: 5
     p
-    = f.fields_for :attachments do |attach|
     = render 'attachments/links', f: f
     btn.btn-default
       = f.submit 'Create'

@@ -1,11 +1,10 @@
-.new_answer
+.new_answer.col-xs-11.col-md-push-1
   = form_for [@question, @answer], remote: true  do |f|
     .answer-errors
     .input-group-addon
       = f.label :body, 'Your answer'
     = f.text_area :body, class: 'form-control new_answer_form'
     p
-    = f.fields_for :attachments do |attach|
     = render 'attachments/links', f: f
     btn.btn-default
     = f.submit 'Post your answer'
