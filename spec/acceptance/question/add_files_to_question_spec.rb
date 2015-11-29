@@ -1,6 +1,6 @@
 require 'acceptance_helper'
 
-featute 'Add files to question', %q{
+feature 'Add files to question', %q{
   In order to illustrate question
   As an question's author
   I want to be able to attach files to question
@@ -20,6 +20,6 @@ featute 'Add files to question', %q{
 
     click_on 'Create'
 
-    expect(page).to have_content 'spec_helper.rb'
+    expect(page).to have_link 'spec_helper.rb', href: '/uploads/attachment/file/1/spec_helper.rb'
   end 
 end

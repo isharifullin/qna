@@ -7,15 +7,18 @@ RSpec.describe Answer, type: :model do
   let(:answer) { create(:answer, question: question) }
 
   describe "validaion tests" do
-    it {should validate_presence_of :body}
-    it {should validate_presence_of :question_id}
-    it {should validate_presence_of :user_id}
+    it { should validate_presence_of :body }
+    it { should validate_presence_of :question_id }
+    it { should validate_presence_of :user_id }
   end
 
   describe "association tests" do
-    it {should belong_to(:user)}
-  	it {should belong_to(:question)}
+    it { should belong_to :user }
+  	it { should belong_to :question }
+    it { should have_many(:attachments).dependent(:destroy) } 
   end
+
+  it { should accept_nested_attributes_for :attachments }
 
   describe 'default scope test' do
     it 'should show the best answer first' do
