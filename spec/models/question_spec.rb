@@ -11,5 +11,6 @@ RSpec.describe Question, type: :model do
   describe "association tests" do
     it {should belong_to(:user)}
     it { should have_many(:answers).dependent(:destroy) }
+    it { should have_many(:attachments).dependent(:destroy) }
   end
 end
