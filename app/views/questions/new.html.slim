@@ -5,10 +5,8 @@
     .input-group-addon
       = f.label :body
     => f.text_area :body, row: 10, class: 'form-control', rows: 5
-    p Attachments
     p
-    = f.fields_for :attachments do |a|
-      = a.label :file
-      = a.file_field :file
+    = f.fields_for :attachments do |attach|
+    = render 'attachments/links', f: f
     btn.btn-default
       = f.submit 'Create'
