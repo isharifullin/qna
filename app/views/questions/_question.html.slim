@@ -28,6 +28,7 @@
         .input-group-addon
           = f.label :body
         = f.text_area :body, class: 'form-control', rows: 5
+        = render 'attachments/links', f: f
         btn.btn-default
           = f.submit 'Save'
       end
