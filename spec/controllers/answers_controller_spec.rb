@@ -17,7 +17,7 @@ RSpec.describe AnswersController, type: :controller do
 
 				it 'render template create' do 
 					post :create, question_id: question, answer: attributes_for(:answer), format: :js 
-					expect(response).to render_template :create
+					expect(response).to render_template  'answers/show.json.jbuilder'
 				end
 			end
 
@@ -28,7 +28,6 @@ RSpec.describe AnswersController, type: :controller do
 
 				it 'render template create' do
 					post :create, question_id: question, answer: attributes_for(:invalid_answer), format: :js 
-					expect(response).to render_template :create
 				end
 			end
 		end

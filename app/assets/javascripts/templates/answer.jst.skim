@@ -1,0 +1,33 @@
+.row.answer id = "answer_#{@answer.id}"
+  .col-xs-1.vote
+    - if @answer.best
+      p id='best_answer' Best
+    - else 
+      - if @answer.current_user_id == @answer.question_user_id
+        a data-remote="true" rel="nofollow" data-method="patch" href=@answer.make_best_url Best 
+  .col-xs-11
+    p = @answer.body
+    p 
+    ul.attachments
+      - if @answer.attachments.length >= 1
+        - for value in @answer.attachments
+          li.attachment id = "attachment_#{value.id}"
+            a href=value.file_url = value.file_name
+
+    - if @answer.current_user_id == @answer.question_user_id
+        a.edit_answer_link href="#" data-answer-id=@answer.id Edit 
+        a id="destroy_answer_#{@answer.id}" href=@answer.destroy_url data-remote="true" data-method="delete" Delete 
+    'Answered 
+    = @answer.created_time 
+    ' ago.
+
+    form class="edit_answer" id="edit_answer_#{@answer.id}" enctype="multipart/form-data" action=@answer.update_url accept-charset="UTF-8" data-remote="true" method="post"
+      input name="utf8" type="hidden" value="✓"
+      input type="hidden" name="_method" value="patch"
+      .input-group-addon
+        label for="answer_body" Your answer
+      textarea class="form-control" rows="5" name="answer[body]" id="answer_body" = @answer.body
+
+      btn.btn-default
+        input type="submit" name="commit" value="Save"  
+   

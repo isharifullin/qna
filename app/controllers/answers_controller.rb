@@ -11,7 +11,11 @@ class AnswersController < ApplicationController
 	def create 
 		@answer = @question.answers.new(answer_params)
 		@answer.user = current_user
-		@answer.save 
+    if @answer.save
+      render json: render_to_string(template: 'answers/show.json.jbuilder')
+    else
+      render json: @answer.errors.full_messages, status: :unprocessable_entity
+    end
 	end
 
   def update

@@ -17,3 +17,5 @@
 //= require_tree .
 //= require bootstrap
 //= require cocoon
+//= require skim
+//= require_tree ./templates
