@@ -173,4 +173,44 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
   end
+
+  describe 'PATCH #upvote' do
+    sign_in_user
+    
+    it 'save new upvote for question in the database' do
+      expect { patch :upvote, id: question, format: :json }.to change(question.votes.where(value = 1), :count).by(1)
+    end
+
+    it 'render votes' do
+      patch :upvote, id: question, format: :json
+      expect(response).to render_template :vote
+    end
+  end
+
+  describe 'PATCH #downvote' do
+    sign_in_user
+    
+    it 'save new downvote for question in the database' do
+      expect { patch :downvote, id: question, format: :json }.to change(question.votes.where(value = -1), :count).by(1)
+    end
+
+    it 'render votes' do
+      patch :downvote, id: question, format: :json
+      expect(response).to render_template :vote
+    end
+  end
+
+  describe 'PATCH #unvote' do
+    let(:vote) { create(:vote, votable: question, user: @user) }
+    sign_in_user
+    
+    it 'delete vote from database' do
+      expect { patch :unvote, id: question, format: :json }.to change(question.votes, :count).by(-1)
+    end
+
+    it 'render votes' do
+      patch :unvote, id: question, format: :json
+      expect(response).to render_template :vote
+    end
+  end
 end

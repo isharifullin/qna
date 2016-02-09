@@ -110,4 +110,44 @@ RSpec.describe AnswersController, type: :controller do
       expect(response).to render_template :make_best
     end
 	end
+
+  describe 'PATCH #upvote' do
+    sign_in_user
+    
+    it 'save new upvote for answer in the database' do
+      expect { patch :upvote, id: answer, format: :json }.to change(answer.votes.where(value = 1), :count).by(1)
+    end
+
+    it 'render votes' do
+      patch :upvote, id: answer, format: :json
+      expect(response).to render_template :vote
+    end
+  end
+
+  describe 'PATCH #downvote' do
+    sign_in_user
+    
+    it 'save new downvote for answer in the database' do
+      expect { patch :downvote, id: answer, format: :json }.to change(answer.votes.where(value = -1), :count).by(1)
+    end
+
+    it 'render votes' do
+      patch :downvote, id: answer, format: :json
+      expect(response).to render_template :vote
+    end
+  end
+
+  describe 'PATCH #unvote' do
+    let(:vote) { create(:vote, votable: answer, user: @user) }
+    sign_in_user
+    
+    it 'delete vote from database' do
+      expect { patch :unvote, id: answer, format: :json }.to change(answer.votes, :count).by(-1)
+    end
+
+    it 'render votes' do
+      patch :unvote, id: answer, format: :json
+      expect(response).to render_template :vote
+    end
+  end
 end
