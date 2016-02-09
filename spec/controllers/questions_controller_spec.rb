@@ -178,7 +178,7 @@ RSpec.describe QuestionsController, type: :controller do
     sign_in_user
     
     it 'save new upvote for question in the database' do
-      expect { patch :upvote, id: question, format: :json }.to change(question.votes.where(value = 1), :count).by(1)
+      expect { patch :upvote, id: question, format: :json }.to change(question.votes.upvotes, :count).by(1)
     end
 
     it 'render votes' do
@@ -191,7 +191,7 @@ RSpec.describe QuestionsController, type: :controller do
     sign_in_user
     
     it 'save new downvote for question in the database' do
-      expect { patch :downvote, id: question, format: :json }.to change(question.votes.where(value = -1), :count).by(1)
+      expect { patch :downvote, id: question, format: :json }.to change(question.votes.downvotes, :count).by(1)
     end
 
     it 'render votes' do

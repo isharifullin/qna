@@ -1,12 +1,22 @@
 Rails.application.routes.draw do
+  root to: 'questions#index'
+
   devise_for :users
-  resources :questions do
-    resources :answers, only: [:create, :update, :destroy] do
+
+  concern :votable do
+    member do
+      patch :upvote
+      patch :downvote
+      patch :unvote
+    end
+  end
+
+  resources :questions, concerns: :votable do
+    resources :answers, concerns: :votable, only: [:create, :update, :destroy, :upvote, :downvote, :unvote] do
       patch 'make_best', on: :member
     end
   end
 
-  root to: 'questions#index'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

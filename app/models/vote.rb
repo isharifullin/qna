@@ -4,4 +4,8 @@ class Vote < ActiveRecord::Base
 
   validates :user_id, :votable, :value, presence: true
   validates :value, inclusion: { in: [-1, 1] }
+
+  scope :upvotes, -> { where(value: 1) }
+  scope :downvotes, -> { where(value: -1) }
+  scope :rating, -> { sum(:value)}
 end

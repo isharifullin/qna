@@ -1,4 +1,6 @@
 class AnswersController < ApplicationController
+  include Votable
+
   before_action :authenticate_user!
 	before_action :load_question
   before_action :verify_question_owner, only: [:make_best]
