@@ -1,0 +1,7 @@
+.vote_bar
+  - if @object.voted
+    a href=@object.unvote_url data-method="patch" data-remote="true" data-type="json" unvote 
+  - else
+    a href=@object.upvote_url data-method="patch" data-remote="true" data-type="json" + 
+    a href=@object.downvote_url data-method="patch" data-remote="true" data-type="json" - 
+  => @object.rating

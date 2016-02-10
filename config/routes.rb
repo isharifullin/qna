@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   end
 
   resources :questions, concerns: :votable do
-    resources :answers, concerns: :votable, only: [:create, :update, :destroy, :upvote, :downvote, :unvote] do
+    resources :answers, concerns: :votable, shallow: true, only: [:create, :update, :destroy, :upvote, :downvote, :unvote] do
       patch 'make_best', on: :member
     end
   end

@@ -2,15 +2,16 @@ class AnswersController < ApplicationController
   include Votable
 
   before_action :authenticate_user!
-	before_action :load_question
+  before_action :load_question, only: [:new, :create]
+	before_action :load_answer, only: [:update, :destroy, :make_best]
+  before_action :verify_owner, only: [:update, :destroy]
   before_action :verify_question_owner, only: [:make_best]
-	before_action :verify_owner, only: [:update, :destroy]
   
 	def new
 		@answer = @question.answers.new
 	end
 
-	def create 
+	def create
 		@answer = @question.answers.new(answer_params)
 		@answer.user = current_user
     if @answer.save
@@ -39,16 +40,16 @@ class AnswersController < ApplicationController
 	end
 
 	def load_answer
-		@answer = @question.answers.find(params[:id])
+		@answer = Answer.find(params[:id])
 	end
 
   def verify_owner
-  	load_answer
+    @question = @answer.question
     redirect_to @question unless current_user.id == @answer.user_id
   end
 
   def verify_question_owner
-    load_answer
+    @question = @answer.question
     redirect_to @question unless current_user.id == @question.user_id
   end
 

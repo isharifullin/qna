@@ -1,0 +1,8 @@
+.vote_bar
+  - if current_user && !user_authorized_for(object)
+    - if current_user.voted_for?(object)
+      => link_to 'unvote', eval("unvote_#{object.class.to_s.downcase}_path(object)"), method: :patch, remote: true, data: { type: :json } 
+    - else
+      => link_to '+', eval("upvote_#{object.class.to_s.downcase}_path(object)"), method: :patch, remote: true, data: { type: :json }  
+      => link_to '-', eval("downvote_#{object.class.to_s.downcase}_path(object)"), method: :patch, remote: true, data: { type: :json } 
+    = object.votes.rating

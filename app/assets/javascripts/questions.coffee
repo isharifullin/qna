@@ -9,5 +9,10 @@ ready = ->
     question_id = $(this).data('questionId');
     $('form#edit_question_' + question_id).show();
 
+  $('.vote_question').bind 'ajax:success', (e, data, status, xhr) ->
+    question = $.parseJSON(xhr.responseText)
+    $(".vote_question").html(JST["templates/vote_bar"]({object: question}))
+
+
 $(document).ready(ready)
 $(document).on('page:load', ready)

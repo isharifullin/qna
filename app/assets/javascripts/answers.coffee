@@ -20,5 +20,9 @@ ready = ->
     $.each errors, (index, value) ->
       $('.answer-errors').append value
 
+  $('.vote_answer').bind 'ajax:success', (e, data, status, xhr) ->
+    answer = $.parseJSON(xhr.responseText)
+    $("#vote_answer_#{answer.id}").html(JST["templates/vote_bar"]({object: answer}))
+
 $(document).ready(ready)
 $(document).on('page:load', ready)

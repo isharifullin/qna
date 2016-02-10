@@ -138,8 +138,8 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'PATCH #unvote' do
-    let(:vote) { create(:vote, votable: answer, user: @user) }
     sign_in_user
+    let!(:vote) { create(:vote, votable: answer, user: @user) }
     
     it 'delete vote from database' do
       expect { patch :unvote, question_id: question, id: answer, format: :json }.to change(answer.votes, :count).by(-1)

@@ -3,14 +3,13 @@
     h3.media-heading { margin-left:20px; }
       = question.title
   .row 
-    .col-xs-1.vote
-      '#vote
+    .col-xs-1.vote_question
+      = render 'shared/vote_bar', object: question
     .col-xs-11
       = question.body
       p
       ul.attachments
         = render question.attachments
-
       p
       - if user_authorized_for(question)
 

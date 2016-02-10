@@ -19,32 +19,32 @@ feature 'Vote for answer or question', %q{
       visit question_path(question)
     end
 
-    scenario 'can upvote for question' do
-      within '.question' do
+    scenario 'can upvote for question', js: true do
+      within '.vote_question' do
         click_link '+'
 
         expect(page).to have_text '1'
       end
     end
 
-    scenario 'can downvote for question' do
-      within '.question' do
+    scenario 'can downvote for question', js: true do
+      within '.vote_question' do
         click_link '-'
 
         expect(page).to have_text '-1'
       end
     end
 
-    scenario 'can upvote for answer' do
-      within "#answer_#{answer.id}" do
+    scenario 'can upvote for answer', js: true do
+      within "#vote_answer_#{answer.id}" do
         click_link '+'
 
         expect(page).to have_text '1'
       end
     end
 
-    scenario 'can downvote for answer' do
-      within "#answer_#{answer.id}" do
+    scenario 'can downvote for answer', js: true do
+      within "#vote_answer_#{answer.id}" do
         click_link '-'
 
         expect(page).to have_text '-1'
@@ -52,8 +52,8 @@ feature 'Vote for answer or question', %q{
     end
 
 
-    scenario 'cannot multiple vote for question' do
-      within '.question' do
+    scenario 'cannot multiple vote for question', js: true do
+      within '.vote_question' do
         click_link '+'
 
         expect(page).to_not have_link '+'
@@ -62,8 +62,8 @@ feature 'Vote for answer or question', %q{
       end
     end
 
-    scenario 'cannot multiple vote for answer' do
-      within "#answer_#{answer.id}" do
+    scenario 'cannot multiple vote for answer', js: true do
+      within "#vote_answer_#{answer.id}" do
         click_link '-'
 
         expect(page).to_not have_link '+'
@@ -72,8 +72,8 @@ feature 'Vote for answer or question', %q{
       end
     end
 
-    scenario 'can unvote for question' do
-      within '.question' do
+    scenario 'can unvote for question', js: true do
+      within '.vote_question' do
         click_link '+'
 
         expect(page).to have_text '1'
@@ -84,8 +84,8 @@ feature 'Vote for answer or question', %q{
       end
     end
 
-    scenario 'can unvote for answer' do
-      within "#answer_#{answer.id}" do
+    scenario 'can unvote for answer', js: true do
+      within "#vote_answer_#{answer.id}" do
         click_link '+'
 
         expect(page).to have_text '1'
@@ -97,33 +97,33 @@ feature 'Vote for answer or question', %q{
     end
   end
 
-  scenario 'Authenticated user cannot vote for own question or answer' do
+  scenario 'Authenticated user cannot vote for own question or answer', js: true do
     sign_in user
     visit question_path(own_question)
 
-    within '.question' do
+    within '.vote_question' do
         expect(page).to_not have_link '+'
         expect(page).to_not have_link '-'
         expect(page).to_not have_link 'unvote'
     end
 
-    within "#answer_#{own_answer.id}" do
+    within "#vote_answer_#{own_answer.id}" do
         expect(page).to_not have_link '+'
         expect(page).to_not have_link '-'
         expect(page).to_not have_link 'unvote'
     end
   end
 
-  scenario 'Non-authenticated user cannot vote for question or answer' do
+  scenario 'Non-authenticated user cannot vote for question or answer', js: true do
     visit question_path(question)
 
-    within '.question' do
+    within '.vote_question' do
         expect(page).to_not have_link '+'
         expect(page).to_not have_link '-'
         expect(page).to_not have_link 'unvote'
     end
 
-    within "#answer_#{answer.id}" do
+    within "#vote_answer_#{answer.id}" do
         expect(page).to_not have_link '+'
         expect(page).to_not have_link '-'
         expect(page).to_not have_link 'unvote'
