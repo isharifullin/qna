@@ -1,0 +1,4 @@
+.col-xs-12 id = "comment_#{@comment.id}" 
+  p #{@comment.body}
+  - if @comment.current_user_id == @comment.user_id
+    a id="destroy_comment_#{@comment.id}" href=@comment.url data-remote="true" data-method="delete" Delete

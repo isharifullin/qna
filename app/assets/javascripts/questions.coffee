@@ -17,5 +17,10 @@ ready = ->
     question = $.parseJSON(data['question'])
     $('.questions_list').append(JST["templates/question"]({question: question}))
 
+  questionId = $('.answers').data('questionId')
+  PrivatePub.subscribe '/questions/' + questionId + '/answers', (data, channel) ->
+    answer = $.parseJSON(data['answer'])
+    $('.answers').append(JST["templates/answer"]({answer: answer}))
+    $('.form-control#answer_body').val('')
 $(document).ready(ready)
 $(document).on('page:load', ready)

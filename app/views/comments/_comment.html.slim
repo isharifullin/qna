@@ -1,0 +1,5 @@
+- if comment.persisted? 
+  .col-xs-12 [id = "comment_#{comment.id}" ]
+    p = comment.body
+    - if user_authorized_for(comment)
+      = link_to 'Delete', comment_path(comment), remote: true, method: :delete, id: "comment_answer_#{comment.id}" 

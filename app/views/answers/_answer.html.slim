@@ -27,3 +27,8 @@
         btn.btn-default
           = f.submit 'Save'
       end
+      .div [id = "answer_#{answer.id}_comments"]
+        p Comments
+        .col-xs-5
+          = render 'comments/form', comment: answer.comments.new, commentable: answer
+        = render answer.comments

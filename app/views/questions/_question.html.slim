@@ -30,4 +30,8 @@
         = render 'attachments/links', f: f
         btn.btn-default
           = f.submit 'Save'
-      
+      .div [id = "question_#{question.id}_comments"] 
+        p Comments
+        .col-xs-5
+          = render 'comments/form', comment: question.comments.new, commentable: question
+        = render question.comments
