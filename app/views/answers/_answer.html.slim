@@ -18,7 +18,8 @@
       'Answered 
       => time_ago_in_words(answer.created_at)  
       ' ago.
-      = form_for [answer], remote: true, id: "edit_answer_#{answer.id}"  do |f|
+      = form_for [answer], remote: true, id: "edit_answer_#{answer.id}", data: {answer_id: answer.id}  do |f|
+        .answer-errors [id = "edit_answer_#{answer.id}"] 
         .input-group-addon
           = f.label :body, 'Your answer'
         = f.text_area :body, class: 'form-control', rows: 5

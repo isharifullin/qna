@@ -1,6 +1,8 @@
 = render @question
 
-.container.answers
+.container.answers data-question-id=@question.id
   = render @answers
 
 = render 'answers/form'
+
+= subscribe_to "/questions/#{@question.id}/answers"

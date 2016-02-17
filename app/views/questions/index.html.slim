@@ -1,5 +1,8 @@
+.questions_list
   - @questions.each do |question|
     .row.media-heading    
       .col-xs-2
-      .col-xs-10
+      .col-xs-10.question [id = "question_#{question.id}"]
         = link_to question.title, question
+
+= subscribe_to "/questions/index"

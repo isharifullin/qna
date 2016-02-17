@@ -1,0 +1,4 @@
+.row.media-heading    
+  .col-xs-2
+  .col-xs-10.question id = "question_#{@question.id}"
+    a  href=@question.url #{@question.title}

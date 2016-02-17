@@ -17,6 +17,8 @@ gem 'carrierwave'
 gem 'remotipart'
 gem 'cocoon'
 gem 'skim'
+gem 'private_pub'
+gem 'thin'
 
 group :development, :test do
   gem 'rspec-rails'

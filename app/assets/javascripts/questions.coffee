@@ -13,6 +13,9 @@ ready = ->
     question = $.parseJSON(xhr.responseText)
     $(".vote_question").html(JST["templates/vote_bar"]({object: question}))
 
+  PrivatePub.subscribe '/questions/index', (data, channel) ->
+    question = $.parseJSON(data['question'])
+    $('.questions_list').append(JST["templates/question"]({question: question}))
 
 $(document).ready(ready)
 $(document).on('page:load', ready)
