@@ -30,6 +30,5 @@ ready = ->
     answer = $.parseJSON(data['answer'])
     $('.answers').append(JST["templates/answer"]({answer: answer}))
     $('.form-control#answer_body').val('')
-
 $(document).ready(ready)
 $(document).on('page:load', ready)

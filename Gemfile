@@ -19,6 +19,7 @@ gem 'cocoon'
 gem 'skim'
 gem 'private_pub'
 gem 'thin'
+gem 'gon'
 
 group :development, :test do
   gem 'rspec-rails'

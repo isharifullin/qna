@@ -3,7 +3,7 @@
     - if @answer.best
       p id='best_answer' Best
     - else 
-      - if @answer.current_user_id == @answer.question_user_id
+      - if @answer.user_id == gon.current_user_id
         a data-remote="true" rel="nofollow" data-method="patch" href=@answer.make_best_url Best 
   .col-xs-11
     p = @answer.body
@@ -14,14 +14,14 @@
           li.attachment id = "attachment_#{value.id}"
             a href=value.file_url = value.file_name
 
-    - if @answer.current_user_id == @answer.question_user_id
+    - if @answer.user_id == gon.current_user_id 
         a.edit_answer_link href="#" data-answer-id=@answer.id Edit 
-        a id="destroy_answer_#{@answer.id}" href=@answer.destroy_url data-remote="true" data-method="delete" Delete 
+        a id="destroy_answer_#{@answer.id}" href=@answer.url data-remote="true" data-method="delete" Delete 
     'Answered 
     = @answer.created_time 
     ' ago.
 
-    form class="edit_answer" id="edit_answer_#{@answer.id}" enctype="multipart/form-data" action=@answer.update_url accept-charset="UTF-8" data-remote="true" method="post"
+    form class="edit_answer" id="edit_answer_#{@answer.id}" enctype="multipart/form-data" action=@answer.url accept-charset="UTF-8" data-remote="true" method="post"
       input name="utf8" type="hidden" value="✓"
       input type="hidden" name="_method" value="patch"
       .input-group-addon

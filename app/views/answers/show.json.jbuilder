@@ -1,9 +1,6 @@
-json.extract! @answer, :id, :question_id, :body, :created_at, :updated_at
-json.user @answer.user, :id
-json.update_url  answer_path(@answer.question, @answer)
-json.destroy_url answer_path(@answer.question, @answer)
+json.extract! @answer, :id, :question_id, :body, :created_at, :updated_at, :user_id
+json.url  answer_path(@answer.question, @answer)
 json.make_best_url make_best_answer_path(@answer.question, @answer)
-json.current_user_id current_user.id
 json.question_user_id @answer.question.user_id
 json.created_time time_ago_in_words(@answer.created_at) 
 
