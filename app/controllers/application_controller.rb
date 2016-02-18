@@ -8,6 +8,8 @@ class ApplicationController < ActionController::Base
   def init_gon_current_user
     if user_signed_in?
       gon.current_user_id = current_user.id
+    else 
+      gon.current_user_id = nil
     end
   end
 end
