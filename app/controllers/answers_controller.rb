@@ -6,24 +6,18 @@ class AnswersController < ApplicationController
 	before_action :load_answer, only: [:update, :destroy, :make_best]
   before_action :verify_owner, only: [:update, :destroy]
   before_action :verify_question_owner, only: [:make_best]
-  
-	def new
-		@answer = @question.answers.new
-	end
+  after_action :publish_answer, only: :create
+
+  respond_to :js
+  respond_to :json, only: :create
 
 	def create
-		@answer = @question.answers.new(answer_params)
-		@answer.user = current_user
-    if @answer.save
-      PrivatePub.publish_to "/questions/#{@question.id}/answers", answer: render_to_string(template: 'answers/show.json.jbuilder')
-      render nothing: true
-    else
-      render json: @answer.errors.full_messages, status: :unprocessable_entity
-    end
+    respond_with(@answer = @question.answers.create(answer_params.merge(user: current_user)))
 	end
 
   def update
     @answer.update(answer_params)
+    respond_with @answer
   end
 
 	def destroy
@@ -35,6 +29,10 @@ class AnswersController < ApplicationController
   end
 
 	private
+
+  def publish_answer
+    PrivatePub.publish_to "/questions/#{@question.id}/answers", answer: render_to_string(template: 'answers/show.json.jbuilder') if @answer.valid?
+  end
 
 	def load_question
 		@question = Question.find(params[:question_id])

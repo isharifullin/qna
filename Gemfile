@@ -20,6 +20,7 @@ gem 'skim'
 gem 'private_pub'
 gem 'thin'
 gem 'gon'
+gem 'responders'
 
 group :development, :test do
   gem 'rspec-rails'

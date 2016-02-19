@@ -12,8 +12,10 @@ ready = ->
   $('form.new_answer').bind 'ajax:error', (e, xhr, status, error) ->
     errors = $.parseJSON(xhr.responseText)
     $('.answer-errors').html('')
-    $.each errors, (index, value) ->
-      $('.answer-errors').append value
+    $.each errors, (index, attributes) ->
+      $.each attributes, (key, value) ->
+        error = key.charAt(0).toUpperCase() + key.slice(1) + ' ' + value;
+        $('.answer-errors').append error
 
   $('form.edit_answer').bind 'ajax:error', (e, xhr, status, error) ->
     errors = $.parseJSON(xhr.responseText)

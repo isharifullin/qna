@@ -60,7 +60,7 @@ feature 'Destroy comment for answer or question', %q{
     end
   end
 
-  scenario 'Non-authenticated user tries to create comment' do
+  scenario 'Non-authenticated user tries to destroy comment' do
     visit question_path(question)
 
     expect(page).to_not have_link 'Delete'

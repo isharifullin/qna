@@ -4,30 +4,24 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :load_question, only: [:show, :edit, :update, :destroy]
   before_action :verify_owner, only: [:destroy, :update]
+  after_action :publish_question, only: :create
+
+  respond_to :html
 
   def index
-  	@questions = Question.all
+  	respond_with(@questions = Question.all)
   end
 
   def show
-    @answers = @question.answers
-    @answer = @question.answers.build
+    respond_with @question
   end
 
   def new
-  	@question = Question.new
+    respond_with(@question = Question.new)
   end
 
   def create
-  	@question = Question.new(question_params)
-  	@question.user = current_user
-  	if @question.save
-      flash[:notice] = 'Your question successfully created.'
-  		PrivatePub.publish_to "/questions/index", question: render_to_string(template: 'questions/show.json.jbuilder')
-      redirect_to @question
-  	else
-  		render :new
-  	end
+    respond_with(@question = Question.create(question_params.merge(user: current_user)))
   end
 
   def update
@@ -35,12 +29,14 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    @question.destroy
-    flash[:notice] = 'Your question successfully deleted.'
-    redirect_to questions_path
+    respond_with(@question.destroy)
   end
 
   private 
+
+  def publish_question
+    PrivatePub.publish_to "/questions/index", question: render_to_string(template: 'questions/show') if @question.valid?
+  end
 
   def load_question
   	@question = Question.find(params[:id])

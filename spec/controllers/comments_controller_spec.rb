@@ -12,11 +12,11 @@ RSpec.describe CommentsController, type: :controller do
         context 'with valid attributes' do
           it 'save new commemt in database' do
             expect { post :create, commentable: 'questions', question_id: question,
-             comment: attributes_for(:comment), format: :js }.to change(question.comments, :count).by(1)
+             comment: attributes_for(:comment), format: :json }.to change(question.comments, :count).by(1)
           end
 
           it 'render template show' do 
-            post :create, commentable: 'questions', question_id: question, comment: attributes_for(:comment), format: :js
+            post :create, commentable: 'questions', question_id: question, comment: attributes_for(:comment), format: :json
             expect(response).to render_template  'comments/show.json.jbuilder'
           end
         end
@@ -24,7 +24,7 @@ RSpec.describe CommentsController, type: :controller do
         context 'with invalid attributes' do
           it 'does not save the comment' do
             expect { post :create, commentable: 'questions', question_id: question,
-             comment: attributes_for(:invalid_comment), format: :js }.to_not change(question.comments, :count)
+             comment: attributes_for(:invalid_comment), format: :json }.to_not change(question.comments, :count)
           end
         end
       end
@@ -33,11 +33,11 @@ RSpec.describe CommentsController, type: :controller do
         context 'with valid attributes' do
           it 'save new commemt in database' do
             expect { post :create, commentable: 'answers', answer_id: answer,
-             comment: attributes_for(:comment), format: :js }.to change(answer.comments, :count).by(1)
+             comment: attributes_for(:comment), format: :json }.to change(answer.comments, :count).by(1)
           end
 
           it 'render template show' do 
-            post :create, commentable: 'answers', answer_id: answer, comment: attributes_for(:comment), format: :js
+            post :create, commentable: 'answers', answer_id: answer, comment: attributes_for(:comment), format: :json
             expect(response).to render_template  'comments/show.json.jbuilder'
           end
         end
@@ -45,7 +45,7 @@ RSpec.describe CommentsController, type: :controller do
         context 'with invalid attributes' do
           it 'does not save the comment' do
             expect { post :create, commentable: 'answers', answer_id: answer,
-             comment: attributes_for(:invalid_comment), format: :js }.to_not change(answer.comments, :count)
+             comment: attributes_for(:invalid_comment), format: :json }.to_not change(answer.comments, :count)
           end     
         end
       end
@@ -55,11 +55,11 @@ RSpec.describe CommentsController, type: :controller do
     let(:answer) { create(:answer, question: question) }   
       it 'does not save comment for question' do
         expect { post :create, commentable: 'questions', question_id: question,
-          comment: attributes_for(:comment), format: :js }.to_not change(question.comments, :count)
+          comment: attributes_for(:comment), format: :json }.to_not change(question.comments, :count)
       end
         it 'does not save comment for answer' do
           expect { post :create, commentable: 'answers', answer_id: answer,
-           comment: attributes_for(:invalid_comment), format: :js }.to_not change(answer.comments, :count)
+           comment: attributes_for(:invalid_comment), format: :json }.to_not change(answer.comments, :count)
       end
     end
   end

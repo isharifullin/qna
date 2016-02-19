@@ -18,7 +18,7 @@ feature 'Destroy question', %q{
       click_link 'Delete'
     end
 
-    expect(page).to have_content 'Your question successfully deleted.'
+    expect(page).to have_content 'Question was successfully destroyed.'
     expect(current_path).to eq questions_path
   end
 

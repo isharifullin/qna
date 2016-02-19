@@ -51,7 +51,7 @@ feature 'Add comment for answer or question', %q{
     end
   end
 
-  scenario 'Non-authenticated user tries to create answer' do
+  scenario 'Non-authenticated user tries to create comment for answer' do
     visit question_path(question)
 
     expect(page).to_not have_selector('.new_comment')

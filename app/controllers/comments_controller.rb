@@ -2,16 +2,12 @@ class CommentsController < ApplicationController
   before_action :authenticate_user!
   before_action :load_commentable, only: :create
   before_action :verify_owner, only: :destroy
+  after_action :publish_comment, only: :create
+  
+  respond_to :json, :js  
 
   def create
-    @comment = @commentable.comments.new(comment_params)
-    @comment.user = current_user
-    if @comment.save
-      PrivatePub.publish_to chanel, comment: render_to_string(template: 'comments/show.json.jbuilder')
-      render nothing: true
-    else
-      render json: @comment.errors.full_messages, status: :unprocessable_entity
-    end
+    respond_with(@comment = @commentable.comments.create(comment_params.merge(user: current_user)))
   end
 
   def destroy
@@ -37,8 +33,9 @@ class CommentsController < ApplicationController
     (params[:commentable].singularize + '_id').to_sym
   end
 
-  def chanel
-    "/questions/#{@commentable.try(:question).try(:id) || @commentable.id}/comments"
+  def publish_comment
+    chanel = "/questions/#{@commentable.try(:question).try(:id) || @commentable.id}/comments"
+    PrivatePub.publish_to chanel, comment: render_to_string(template: 'comments/show.json.jbuilder') if @comment.valid?
   end
 
   def comment_params

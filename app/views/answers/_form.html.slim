@@ -1,5 +1,5 @@
 .new_answer.col-xs-11.col-md-push-1
-  = form_for [@question, @answer], remote: true, data: { type: :json }  do |f|
+  = form_for [@question, @question.answers.build], remote: true, data: { type: :json }  do |f|
     .answer-errors
     .input-group-addon
       = f.label :body, 'Your answer'
