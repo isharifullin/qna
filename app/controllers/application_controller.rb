@@ -9,6 +9,10 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :init_gon_current_user
 
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_to root_path, alert: exception.massage
+  end
+
   private
   def init_gon_current_user
     if user_signed_in?
