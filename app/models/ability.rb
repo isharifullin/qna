@@ -22,9 +22,7 @@ class Ability
 
   def user_abilities
     can :read, :all
-    can :create, [Question, Answer, Comment]
-    can :update, [Question, Answer], user: user
-    can :destroy, [Question, Answer, Comment], user: user
+    can :manage, [Question, Answer, Comment], user: user
     can :make_best, Answer, question: { user_id: user.id }
     
     alias_action :upvote, :downvote, :unvote, to: :vote

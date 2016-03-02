@@ -1,4 +1,4 @@
-- if current_user
+- if can?(:create, Comment)
   = form_for [commentable, comment], remote: true, id: "new_comment", data: { type: :json } do |f|
     .input-group-addon
       = f.label :body, 'Your comment'

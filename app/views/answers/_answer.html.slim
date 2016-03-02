@@ -4,7 +4,7 @@
       - if answer.best
         p [id = 'best_answer'] Best
       - else 
-        => link_to 'Best', make_best_answer_path(answer), method: :patch, remote: true if user_authorized_for(answer.question)
+        => link_to 'Best', make_best_answer_path(answer), method: :patch, remote: true if can?(:make_best, answer)
       .vote_answer [id = "vote_answer_#{answer.id}"]
         = render 'shared/vote_bar', object: answer
     .col-xs-11
@@ -12,7 +12,7 @@
       p 
       ul.attachments
         = render answer.attachments
-      - if user_authorized_for(answer)
+      - if can?(:manage, answer)
         => link_to 'Edit', '#', class: 'edit_answer_link', data: {answer_id: answer.id} 
         => link_to 'Delete', answer_path(answer), remote: true, method: :delete, id: "destroy_answer_#{answer.id}" 
       'Answered 
