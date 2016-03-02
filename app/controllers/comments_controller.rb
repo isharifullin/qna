@@ -1,8 +1,10 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
   before_action :load_commentable, only: :create
-  before_action :verify_owner, only: :destroy
+  before_action :load_comment, only: :destroy
   after_action :publish_comment, only: :create
+
+  authorize_resource
   
   respond_to :json, :js  
 
@@ -16,9 +18,8 @@ class CommentsController < ApplicationController
 
   private
 
-  def verify_owner
+  def load_comment
     @comment = Comment.find(params[:id])
-    redirect_to root_path  unless current_user.id == @comment.user_id
   end
 
   def load_commentable

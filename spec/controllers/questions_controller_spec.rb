@@ -174,11 +174,15 @@ RSpec.describe QuestionsController, type: :controller do
     sign_in_user
     
     it 'save new upvote for question in the database' do
-      expect { patch :upvote, id: question, format: :json }.to change(question.votes.upvotes, :count).by(1)
+      expect { patch :upvote, id: anothers_question, format: :json }.to change(anothers_question.votes.upvotes, :count).by(1)
+    end
+
+    it 'does not save new upvote for question in the database' do
+      expect { patch :upvote, id: question, format: :json }.to_not change(question.votes.upvotes, :count)
     end
 
     it 'render votes' do
-      patch :upvote, id: question, format: :json
+      patch :upvote, id: anothers_question, format: :json
       expect(response).to render_template :vote
     end
   end
@@ -187,24 +191,28 @@ RSpec.describe QuestionsController, type: :controller do
     sign_in_user
     
     it 'save new downvote for question in the database' do
-      expect { patch :downvote, id: question, format: :json }.to change(question.votes.downvotes, :count).by(1)
+      expect { patch :downvote, id: anothers_question, format: :json }.to change(anothers_question.votes.downvotes, :count).by(1)
+    end
+
+    it 'does not save new downvote for question in the database' do
+      expect { patch :downvote, id: question, format: :json }.to_not change(question.votes.upvotes, :count)
     end
 
     it 'render votes' do
-      patch :downvote, id: question, format: :json
+      patch :downvote, id: anothers_question, format: :json
       expect(response).to render_template :vote
     end
   end
 
   describe 'PATCH #unvote' do
     sign_in_user
-    let!(:vote) { create(:vote, votable: question, user: @user) }
+    let!(:vote) { create(:vote, votable: anothers_question, user: @user) }
     it 'delete vote from database' do
-      expect { patch :unvote, id: question, format: :json }.to change(question.votes, :count).by(-1)
+      expect { patch :unvote, id: anothers_question, format: :json }.to change(anothers_question.votes, :count).by(-1)
     end
 
     it 'render votes' do
-      patch :unvote, id: question, format: :json
+      patch :unvote, id: anothers_question, format: :json
       expect(response).to render_template :vote
     end
   end

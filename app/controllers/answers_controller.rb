@@ -1,12 +1,11 @@
 class AnswersController < ApplicationController
   include Votable
-
   before_action :authenticate_user!
-  before_action :load_question, only: [:new, :create]
+  before_action :load_question, only: [:create]
 	before_action :load_answer, only: [:update, :destroy, :make_best]
-  before_action :verify_owner, only: [:update, :destroy]
-  before_action :verify_question_owner, only: [:make_best]
   after_action :publish_answer, only: :create
+
+  authorize_resource
 
   respond_to :js
   respond_to :json, only: :create
@@ -25,6 +24,7 @@ class AnswersController < ApplicationController
   end
 
   def make_best
+    @question = @answer.question
     @answer.make_best
   end
 
@@ -41,16 +41,6 @@ class AnswersController < ApplicationController
 	def load_answer
 		@answer = Answer.find(params[:id])
 	end
-
-  def verify_owner
-    @question = @answer.question
-    redirect_to @question unless current_user.id == @answer.user_id
-  end
-
-  def verify_question_owner
-    @question = @answer.question
-    redirect_to @question unless current_user.id == @question.user_id
-  end
 
 	def answer_params
   	params.require(:answer).permit(:body, attachments_attributes: [:id, :file, :_destroy])
