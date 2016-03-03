@@ -24,6 +24,7 @@ class Ability
     can :read, :all
     can :manage, [Question, Answer, Comment], user: user
     can :make_best, Answer, question: { user_id: user.id }
+    can :me, User, user: user
     
     alias_action :upvote, :downvote, :unvote, to: :vote
     can :vote, [Question, Answer]
