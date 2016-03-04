@@ -3,6 +3,8 @@ require 'rails_helper'
 RSpec.describe CommentsController, type: :controller do
   
   describe 'POST #create' do    
+    let(:chanel) { "/questions/#{question.id}/comments" }
+
     context 'authenticated user' do
     let(:question) { create(:question) }    
     let(:answer) { create(:answer, question: question) }   
@@ -10,15 +12,19 @@ RSpec.describe CommentsController, type: :controller do
 
       context 'for question' do
         context 'with valid attributes' do
+          let(:do_requset) { post :create, commentable: 'questions', question_id: question, comment: attributes_for(:comment), format: :json }
+
           it 'save new commemt in database' do
             expect { post :create, commentable: 'questions', question_id: question,
              comment: attributes_for(:comment), format: :json }.to change(question.comments, :count).by(1)
           end
 
           it 'render template show' do 
-            post :create, commentable: 'questions', question_id: question, comment: attributes_for(:comment), format: :json
+            do_requset
             expect(response).to render_template  'comments/show.json.jbuilder'
           end
+
+          it_behaves_like "publishable"
         end
 
         context 'with invalid attributes' do
@@ -31,15 +37,19 @@ RSpec.describe CommentsController, type: :controller do
 
       context 'for answer' do
         context 'with valid attributes' do
+          let(:do_requset) { post :create, commentable: 'answers', answer_id: answer, comment: attributes_for(:comment), format: :json }
+
           it 'save new commemt in database' do
             expect { post :create, commentable: 'answers', answer_id: answer,
              comment: attributes_for(:comment), format: :json }.to change(answer.comments, :count).by(1)
           end
 
           it 'render template show' do 
-            post :create, commentable: 'answers', answer_id: answer, comment: attributes_for(:comment), format: :json
+            do_requset
             expect(response).to render_template  'comments/show.json.jbuilder'
           end
+
+          it_behaves_like "publishable"
         end
 
         context 'with invalid attributes' do

@@ -9,16 +9,20 @@ RSpec.describe AnswersController, type: :controller do
 	describe 'POST #create' do
 		context 'authenticated user' do
 			sign_in_user
-
 			context 'with valid attributes' do
-				it 'save new Answer in database' do
+				let(:chanel) { "/questions/#{question.id}/answers" }
+        let(:do_requset) { post :create, question_id: question, answer: attributes_for(:answer), format: :js }
+        
+        it 'save new Answer in database' do
 					expect { post :create, question_id: question, answer: attributes_for(:answer), format: :js }.to change(question.answers, :count).by(1)
 				end
 
 				it 'render template create' do 
-					post :create, question_id: question, answer: attributes_for(:answer), format: :js 
+					do_requset 
 					expect(response).to render_template  'answers/show.json.jbuilder'
 				end
+
+        it_behaves_like "publishable"
 			end
 
 			context 'with invalid attributes' do
@@ -111,51 +115,11 @@ RSpec.describe AnswersController, type: :controller do
     end
 	end
 
-  describe 'PATCH #upvote' do
+  describe 'votable' do
     sign_in_user
-    
-    it 'save new upvote for answer in the database' do
-      expect { patch :upvote, question_id: question, id: anothers_answer, format: :json }.to change(anothers_answer.votes.upvotes, :count).by(1)
-    end
-
-    it 'does not save new upvote for answer in the database' do
-      expect { patch :upvote, question_id: question, id: answer, format: :json }.to_not change(answer.votes.upvotes, :count)
-    end
-
-    it 'render votes' do
-      patch :upvote, question_id: question, id: anothers_answer, format: :json
-      expect(response).to render_template :vote
-    end
+    let(:votable) { create(:answer, user: @user) }
+    let(:anothers_votable) { create(:answer) }
+    it_behaves_like "votable"
   end
 
-  describe 'PATCH #downvote' do
-    sign_in_user
-    
-    it 'save new downvote for answer in the database' do
-      expect { patch :downvote, question_id: question, id: anothers_answer, format: :json }.to change(anothers_answer.votes.downvotes, :count).by(1)
-    end
-
-    it 'does not save new downvote for answer in the database' do
-      expect { patch :downvote, question_id: question, id: answer, format: :json }.to_not change(answer.votes.upvotes, :count)
-    end
-
-    it 'render votes' do
-      patch :downvote, question_id: question, id: anothers_answer, format: :json
-      expect(response).to render_template :vote
-    end
-  end
-
-  describe 'PATCH #unvote' do
-    sign_in_user
-    let!(:vote) { create(:vote, votable: anothers_answer, user: @user) }
-    
-    it 'delete vote from database' do
-      expect { patch :unvote, question_id: question, id: anothers_answer, format: :json }.to change(anothers_answer.votes, :count).by(-1)
-    end
-
-    it 'render votes' do
-      patch :unvote, question_id: question, id: anothers_answer, format: :json
-      expect(response).to render_template :vote
-    end
-  end
 end

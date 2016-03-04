@@ -170,50 +170,10 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'PATCH #upvote' do
+  describe 'votable' do
     sign_in_user
-    
-    it 'save new upvote for question in the database' do
-      expect { patch :upvote, id: anothers_question, format: :json }.to change(anothers_question.votes.upvotes, :count).by(1)
-    end
-
-    it 'does not save new upvote for question in the database' do
-      expect { patch :upvote, id: question, format: :json }.to_not change(question.votes.upvotes, :count)
-    end
-
-    it 'render votes' do
-      patch :upvote, id: anothers_question, format: :json
-      expect(response).to render_template :vote
-    end
-  end
-
-  describe 'PATCH #downvote' do
-    sign_in_user
-    
-    it 'save new downvote for question in the database' do
-      expect { patch :downvote, id: anothers_question, format: :json }.to change(anothers_question.votes.downvotes, :count).by(1)
-    end
-
-    it 'does not save new downvote for question in the database' do
-      expect { patch :downvote, id: question, format: :json }.to_not change(question.votes.upvotes, :count)
-    end
-
-    it 'render votes' do
-      patch :downvote, id: anothers_question, format: :json
-      expect(response).to render_template :vote
-    end
-  end
-
-  describe 'PATCH #unvote' do
-    sign_in_user
-    let!(:vote) { create(:vote, votable: anothers_question, user: @user) }
-    it 'delete vote from database' do
-      expect { patch :unvote, id: anothers_question, format: :json }.to change(anothers_question.votes, :count).by(-1)
-    end
-
-    it 'render votes' do
-      patch :unvote, id: anothers_question, format: :json
-      expect(response).to render_template :vote
-    end
+    let(:votable) { create(:question, user: @user) }
+    let(:anothers_votable) { create(:question) }
+    it_behaves_like "votable"
   end
 end

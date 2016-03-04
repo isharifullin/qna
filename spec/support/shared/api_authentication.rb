@@ -1,5 +1,5 @@
 shared_examples_for "API authenticable" do
-  context 'authenticated' do
+  context 'unauthenticated' do
     it 'returns 401 status if there is no access_token' do
       do_request
       expect(response.status).to eq 401
@@ -17,5 +17,4 @@ shared_examples_for "API authenticable" do
       expect(response).to be_success
     end
   end
-
 end
