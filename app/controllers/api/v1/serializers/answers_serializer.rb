@@ -1,0 +1,3 @@
+class Api::V1::Serializers::AnswersSerializer < ActiveModel::Serializer
+  attributes :id, :body, :created_at, :updated_at
+end
