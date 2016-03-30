@@ -5,7 +5,8 @@ class Question < ActiveRecord::Base
   has_many :votes, as: :votable, dependent: :destroy
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :subscriptions, dependent: :destroy
-
+  has_many :subscribers, through: :subscriptions, source: 'user'
+  
   validates :title, :body, :user_id, presence: true
 
   accepts_nested_attributes_for :attachments, reject_if: :all_blank, allow_destroy: true

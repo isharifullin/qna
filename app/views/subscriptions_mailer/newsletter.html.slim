@@ -1,0 +1,5 @@
+News
+  | On question 
+  = link_to @question.title, question_url(@question)
+  |  received a new answer 
+  = truncate(@answer.body, omission: "... (continued)", length: 15)

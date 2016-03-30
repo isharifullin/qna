@@ -11,10 +11,18 @@ class Answer < ActiveRecord::Base
 
   default_scope { order('best DESC','created_at') } 
 
+  after_commit :send_newsletter
+
   def make_best
     Answer.transaction do
       question.answers.update_all(best: false)
       update!(best: true)  
     end
+  end
+
+  private
+
+  def send_newsletter
+    SubscriptionNewsJob.perform_later(self)
   end
 end
