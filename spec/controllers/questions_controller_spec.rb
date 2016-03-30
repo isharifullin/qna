@@ -170,6 +170,83 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
+  describe 'PATCH #subscribe' do
+    let!(:another_user) { create(:user) }
+    let!(:question) {create(:question, user: another_user)}
+    context 'authenticated user' do
+      sign_in_user    
+
+      context 'subscribe to someone elses question' do
+        it 'should save new subscribtion in database' do
+          expect {
+              patch :subscribe, id: question.id, format: :json 
+            }.to change(question.subscriptions, :count).by(1)
+        end
+
+        it 'should render subscribtion view' do
+          patch :subscribe, id: question.id, format: :json 
+          expect(response).to render_template :subscription
+        end
+      end
+
+      context 'subscribe to his own question' do
+        let!(:own_question) { create(:question, user: @user) }
+        
+        it 'does not save new subscribtion in database' do
+          expect {
+              patch :subscribe, id: own_question.id, format: :json 
+            }.to_not change(Subscription, :count)
+        end
+      end      
+    end
+    
+    context 'unauthenticated user' do
+      it 'does not save new subscribtion in database' do
+        expect {
+          patch :subscribe, id: question.id, format: :json 
+        }.to_not change(Subscription, :count)
+      end
+    end
+  end
+
+  describe 'PATCH #unsubscribe' do
+    let!(:another_user) { create(:user) }
+    let!(:question) {create(:question, user: another_user)}
+    context 'authenticated user' do
+      sign_in_user
+      context 'unsubscribe from subscribed question' do
+        let!(:subscribtion) { create(:subscription, question: question, user: @user) }
+
+        it 'delete subscribtion from database' do
+          expect {
+            patch :unsubscribe, id: question.id, format: :json 
+          }.to change(Subscription, :count).by(-1)
+        end
+
+        it 'should render subscribtion view' do
+          patch :unsubscribe, id: question.id, format: :json 
+          expect(response).to render_template :subscription
+        end
+      end
+
+      context 'unsubscribe from not subscribed question' do
+        it 'does not delete subscribtion from database' do
+          expect {
+            patch :unsubscribe, id: question.id, format: :json 
+          }.to_not change(Subscription, :count)
+        end
+      end  
+    end
+
+    context 'unauthenticated user' do
+      it 'does not delete subscribtion from database' do
+        expect {
+          patch :unsubscribe, id: question.id, format: :json 
+        }.to_not change(Subscription, :count)
+      end      
+    end
+  end
+
   describe 'votable' do
     sign_in_user
     let(:votable) { create(:question, user: @user) }

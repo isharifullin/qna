@@ -228,4 +228,48 @@ RSpec.describe User do
       end
     end
   end
+
+  describe '#subscribe' do
+    context 'user not subscribed before' do
+      it 'should save new subscribtion in database' do
+        expect{
+          user.subscribe(question)
+        }.to change(question.subscriptions, :count).by(1)
+      end
+    end
+
+    context 'user subscribed before' do
+      let!(:subscription) { create(:subscription, user: user, question: question) }
+      
+      it 'does not save new subscribtion in database' do
+        expect{
+          user.subscribe(question)
+        }.to_not change(question.subscriptions, :count)
+      end
+    end    
+  end
+
+  describe '#unsubscribe' do
+    let!(:subscription) { create(:subscription, user: user, question: question) }
+    it 'should delete subscribtion from database' do
+      expect{
+        user.unsubscribe(question)
+      }.to change(question.subscriptions, :count).by(-1)
+    end
+  end
+
+  describe '#subscribed_for?' do
+    context 'user not subscribed before' do
+      it 'returns false' do
+        expect(user.subscribed_for?(question)).to eq false
+      end
+    end
+
+    context 'user subscribed before' do
+      let!(:subscription) { create(:subscription, user: user, question: question) }
+      it 'returns true' do
+        expect(user.subscribed_for?(question)).to eq true
+      end
+    end
+  end  
 end

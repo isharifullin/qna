@@ -15,7 +15,14 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :questions, concerns: :votable do
+  concern :subscribable do
+    member do
+      patch :subscribe
+      patch :unsubscribe
+    end
+  end
+
+  resources :questions, concerns: [:votable, :subscribable] do
     resources :comments, defaults: {commentable: 'questions'}
     resources :answers, concerns: :votable, shallow: true, only: [:create, :update, :destroy, :upvote, :downvote, :unvote] do
       resources :comments, defaults: {commentable: 'answers'}

@@ -1,0 +1,7 @@
+.subscription_bar
+  = question.subscriptions.count
+  - if can?(:subscription, question)
+    - if current_user.subscribed_for?(question)
+      => link_to 'Unsubscribe', unsubscribe_question_path(question), method: :patch, remote: true
+    - else
+      => link_to 'Subscribe', subscribe_question_path(question), method: :patch, remote: true

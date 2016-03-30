@@ -1,0 +1,8 @@
+DailyDigest
+= @greeting
+= @questions.first.title 
+if @questions.any?
+  - @questions.each do |question|
+    = link_to question.title, question
+  - else
+    | There are no any questions for today.

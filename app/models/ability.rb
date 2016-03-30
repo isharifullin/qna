@@ -26,6 +26,12 @@ class Ability
     can :make_best, Answer, question: { user_id: user.id }
     can :me, User, user: user
     
+
+    alias_action :subscribe, :unsubscribe, to: :subscription
+
+    can :subscription, Question
+    cannot :subscription, Question, user: user
+
     alias_action :upvote, :downvote, :unvote, to: :vote
     can :vote, [Question, Answer]
     cannot :vote, [Question, Answer], user: user

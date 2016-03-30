@@ -13,6 +13,10 @@ ready = ->
     question = $.parseJSON(xhr.responseText)
     $(".vote_question").html(JST["templates/vote_bar"]({object: question}))
 
+  $('.subscribe_question').bind 'ajax:success', (e, data, status, xhr) ->
+    question = $.parseJSON(xhr.responseText)
+    $(".subscribe_question").html(JST["templates/subscription_bar"]({question: question}))
+
   PrivatePub.subscribe '/questions/index', (data, channel) ->
     question = $.parseJSON(data['question'])
     $('.questions_list').append(JST["templates/question"]({question: question}))

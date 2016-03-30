@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
   has_many :votes, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :authorizations, dependent: :destroy
+  has_many :subscriptions, dependent: :destroy
 
   def vote_for(object, value)
     vote = self.votes.new(votable: object, value: value)
@@ -22,6 +23,19 @@ class User < ActiveRecord::Base
   def voted_for?(object)
     self.votes.where(votable: object).any?
   end
+
+  def subscribe(question)
+    subscription = subscriptions.new(question_id: question.id) 
+    subscription.save! unless subscribed_for?(question)
+  end
+
+  def unsubscribe(question)
+    subscriptions.where(question_id: question.id).delete_all
+  end
+
+  def subscribed_for?(question)
+    subscriptions.where(question_id: question.id).any?
+  end 
 
   def self.find_for_oauth(auth)
     authorization = Authorization.where(provider: auth.provider, uid: auth.uid.to_s).first

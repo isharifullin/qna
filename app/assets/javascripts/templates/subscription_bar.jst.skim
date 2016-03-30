@@ -1,0 +1,6 @@
+.subscription_bar
+  => @question.subscriptions_count
+  - if @question.subscribed
+      a href=@question.unsubscribe_url data-method="patch" data-remote="true" data-type="json" Unsubscribe
+  - else
+      a href=@question.subscribe_url data-method="patch" data-remote="true" data-type="json" Subscribe
