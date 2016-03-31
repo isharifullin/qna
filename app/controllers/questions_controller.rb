@@ -1,6 +1,5 @@
 class QuestionsController < ApplicationController
   include Votable
-  include Subscribable
   
   before_action :authenticate_user!, except: [:index, :show]
   before_action :load_question, except: [:index, :new, :create]
@@ -32,6 +31,16 @@ class QuestionsController < ApplicationController
 
   def destroy
     respond_with(@question.destroy)
+  end
+
+  def subscribe
+    current_user.subscribe(@question)
+    render :subscription
+  end
+
+  def unsubscribe
+    current_user.unsubscribe(@question)
+    render :subscription
   end
 
   private 

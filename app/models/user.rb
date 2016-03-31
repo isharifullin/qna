@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
   end
 
   def voted_for?(object)
-    self.votes.where(votable: object).any?
+    self.votes.where(votable: object).exists?
   end
 
   def subscribe(question)
@@ -34,7 +34,7 @@ class User < ActiveRecord::Base
   end
 
   def subscribed_for?(question)
-    subscriptions.where(question_id: question.id).any?
+    subscriptions.where(question_id: question.id).exists?
   end 
 
   def self.find_for_oauth(auth)
