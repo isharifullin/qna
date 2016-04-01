@@ -17,4 +17,12 @@ RSpec.describe Question, type: :model do
   end
 
   it { should accept_nested_attributes_for :attachments }
+
+  describe 'create subscription for question author' do
+    let!(:question) { build(:question) }
+
+    it 'save new subscription in database' do
+      expect{ question.save }.to change(Subscription, :count).by(1)
+    end
+  end  
 end

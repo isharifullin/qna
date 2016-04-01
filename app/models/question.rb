@@ -12,4 +12,12 @@ class Question < ActiveRecord::Base
   accepts_nested_attributes_for :attachments, reject_if: :all_blank, allow_destroy: true
 
   scope :for_today, -> { where(created_at: Date.today.beginning_of_day..Date.today.end_of_day) }
+
+  after_save :author_subscribe
+
+  private 
+
+  def author_subscribe
+    user.subscribe(self)
+  end
 end

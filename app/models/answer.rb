@@ -23,7 +23,6 @@ class Answer < ActiveRecord::Base
   private
 
   def send_newsletter
-    NotifyOwnerJob.perform_later(self)
     SubscriptionNewsJob.perform_later(self)
   end
 end

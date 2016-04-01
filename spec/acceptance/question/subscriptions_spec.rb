@@ -20,7 +20,7 @@ feature 'subscribe to the question', %q{
       expect(page).to have_link 'Unsubscribe'
 
       within '.subscribe_question' do
-        expect(page).to have_text '1'
+        expect(page).to have_text '2'
       end
     end
 
@@ -34,17 +34,9 @@ feature 'subscribe to the question', %q{
         
         expect(page).to have_link 'Subscribe'
         within '.subscribe_question' do
-          expect(page).to have_text '0'
+          expect(page).to have_text '1'
         end
       end  
-    end
-
-    scenario 'tries subscribe to the own question', js: true do
-      sign_in(user)
-      visit question_path(own_question)
-
-      expect(page).to_not have_link 'Subscribe'
-      expect(page).to_not have_link 'Unsubscribe'
     end
   end
 

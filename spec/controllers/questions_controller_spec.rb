@@ -187,16 +187,6 @@ RSpec.describe QuestionsController, type: :controller do
           patch :subscribe, id: question.id, format: :json 
           expect(response).to render_template :subscription
         end
-      end
-
-      context 'subscribe to his own question' do
-        let!(:own_question) { create(:question, user: @user) }
-        
-        it 'does not save new subscribtion in database' do
-          expect {
-              patch :subscribe, id: own_question.id, format: :json 
-            }.to_not change(Subscription, :count)
-        end
       end      
     end
     
@@ -228,14 +218,6 @@ RSpec.describe QuestionsController, type: :controller do
           expect(response).to render_template :subscription
         end
       end
-
-      context 'unsubscribe from not subscribed question' do
-        it 'does not delete subscribtion from database' do
-          expect {
-            patch :unsubscribe, id: question.id, format: :json 
-          }.to_not change(Subscription, :count)
-        end
-      end  
     end
 
     context 'unauthenticated user' do
