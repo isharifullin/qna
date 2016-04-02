@@ -11,7 +11,7 @@ class Answer < ActiveRecord::Base
 
   default_scope { order('best DESC','created_at') } 
 
-  after_commit :send_newsletter
+  after_save :send_newsletter
 
   def make_best
     Answer.transaction do
