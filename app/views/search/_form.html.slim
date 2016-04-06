@@ -1,0 +1,16 @@
+.search_form
+  = form_for @search, :url => {:controller => "search", :action => "index" }, class: 'navbar-form', role: 'search' do |f|
+    .input-group
+      = f.text_field :query_body, class: 'form-control', placeholder: 'Search'
+      .input-group-btn
+        = f.submit 'Go', class: 'btn btn-default'
+    = f.radio_button :query_object, 'All' 
+    => f.label :autolyse, "All"
+    = f.radio_button :query_object, 'Question'
+    => f.label :autolyse, "Questions"
+    = f.radio_button :query_object, 'Answer'
+    => f.label :autolyse, "Answers"
+    = f.radio_button :query_object, 'Comment'
+    => f.label :autolyse, "Comments"
+    = f.radio_button :query_object, 'User'
+    => f.label :autolyse, "Users"

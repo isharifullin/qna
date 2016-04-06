@@ -17,3 +17,13 @@
         - else
           li
             = link_to 'Sign in', new_user_session_path, id: 'sign_in_link'
+
+      .col-md-3.pull-right
+        - unless devise_controller?
+          = form_for SearchQuery.new, :url => {:controller => "search", :action => "index" }, class: 'navbar-form', role: 'search' do |f|
+            .input-group
+              = f.label :query_body, hidden: true
+              = f.text_field :query_body, class: 'form-control', placeholder: 'Search'
+              = f.hidden_field :query_object, value: 'All'
+              .input-group-btn
+                = f.submit 'Go', class: 'btn btn-default'

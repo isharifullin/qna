@@ -1,0 +1,18 @@
+= render 'form'
+- if !@results.empty?
+  -  @results.each do |result|
+    .search_result
+      .row.media-heading    
+        .col-xs-2
+          = result.class.to_s
+        .col-xs-10
+          - if result.class.to_s == 'Question'
+            => link_to "#{result.title} #{result.body}", result
+          - if result.class.to_s == 'Answer'
+            => link_to result.body, result.question
+          - if result.class.to_s == 'Comment'
+            => link_to result.body, result.commentable.try(:question)
+          - if result.class.to_s == 'User'
+            => link_to result.email, result
+- else
+  | Unable to find anythig on your request.

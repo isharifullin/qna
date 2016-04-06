@@ -7,6 +7,10 @@ Rails.application.routes.draw do
     post '/finish_sign_up' => 'omniauth_callbacks#finish_sign_up'
   end
   
+  post '/search' => 'search#index'
+
+  resources :users, only: :show
+
   concern :votable do
     member do
       patch :upvote
