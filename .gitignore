@@ -20,3 +20,4 @@ config/database.yml
 secrets.yml
 config/*.sphinx.conf
 db/sphinx
+.rvmrc

@@ -11,9 +11,9 @@ class SearchQuery
       return []
     else
       if query_object == 'All'
-        ThinkingSphinx.search query_body, order: 'created_at DESC'
+        ThinkingSphinx.search Riddle::Query.escape(query_body), order: 'created_at DESC'
       else
-        query_object.constantize.search query_body, order: 'created_at DESC'
+        query_object.constantize.search Riddle::Query.escape(query_body), order: 'created_at DESC'
       end
     end
   end
