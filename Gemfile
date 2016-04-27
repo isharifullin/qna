@@ -9,27 +9,35 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
+
 gem 'slim-rails'
+gem 'skim'
+
 gem 'devise'
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'omniauth-twitter'
+gem 'doorkeeper'
+
 gem 'bootstrap-sass'
 gem 'carrierwave'
 gem 'remotipart'
 gem 'cocoon'
-gem 'skim'
+
+gem 'responders'
 gem 'private_pub'
 gem 'thin'
 gem 'gon'
-gem 'responders'
-gem 'omniauth'
-gem 'omniauth-facebook'
-gem 'omniauth-twitter'
+
 gem 'cancancan'
-gem 'doorkeeper'
+
 gem 'active_model_serializers'
 gem 'oj'
 gem 'oj_mimic_json'
+
 gem 'sidekiq'
 gem 'whenever', require: false
+
 gem 'mysql2'
 gem 'thinking-sphinx'
 

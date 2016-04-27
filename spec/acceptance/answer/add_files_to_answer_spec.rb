@@ -19,7 +19,7 @@ feature 'Add files to answer', %q{
       click_link 'Add file'
       attach_file 'File', "#{Rails.root}/spec/spec_helper.rb"
       
-      click_on 'Post your answer'
+      click_on 'Save'
 
       within '.answers' do
         expect(page).to have_link 'spec_helper.rb', href: '/uploads/attachment/file/1/spec_helper.rb'
@@ -35,7 +35,7 @@ feature 'Add files to answer', %q{
       all("input[type='file']").first.set("#{Rails.root}/spec/spec_helper.rb")
       all("input[type='file']").last.set("#{Rails.root}/spec/acceptance_helper.rb")
 
-      click_on 'Post your answer'
+      click_on 'Save'
       
       within '.answers' do
         expect(page).to have_link 'spec_helper.rb', href: '/uploads/attachment/file/1/spec_helper.rb'

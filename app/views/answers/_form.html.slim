@@ -1,10 +1,8 @@
-.new_answer.col-xs-11.col-md-push-1
+.new_answer
   = form_for [@question, @question.answers.build], remote: true, data: { type: :json }  do |f|
     .answer-errors
-    .input-group-addon
-      = f.label :body, 'Your answer'
+    = f.label :body, 'Your answer'
     = f.text_area :body, class: 'form-control new_answer_form'
     p
     = render 'attachments/links', f: f
-    btn.btn-default
-    = f.submit 'Post your answer'
+    = f.submit 'Save', class: 'btn btn-default' 

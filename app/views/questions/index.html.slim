@@ -1,8 +1,8 @@
 .questions_list
   - @questions.each do |question|
-    .row.media-heading    
-      .col-xs-2
-      .col-xs-10.question [id = "question_#{question.id}"]
-        = link_to question.title, question
-
-= subscribe_to "/questions/index"
+    = link_to question do
+      .media.question [id = "question_#{question.id}"]
+        .media-left
+          = image_tag(question.user.gravatar, alt: "avatar")
+        .media-body
+          = question.title

@@ -17,7 +17,7 @@ feature 'Create answer', %q{
 
     scenario 'creates answer', js: true do
       fill_in 'Your answer', with: 'My answer'
-      click_on 'Post your answer'
+      click_on 'Save'
 
       within '.answers' do
         expect(page).to have_content 'My answer'
@@ -27,7 +27,7 @@ feature 'Create answer', %q{
     end
 
     scenario 'tries to create invalid answer', js: true do
-      click_on 'Post your answer'
+      click_on 'Save'
 
       within '.answer-errors' do
         expect(page).to have_content "Body can't be blank"
@@ -41,7 +41,7 @@ feature 'Create answer', %q{
     visit question_path(question)
 
     fill_in 'Your answer', with: 'My answer'
-    click_on 'Post your answer'
+    click_on 'Save'
 
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end

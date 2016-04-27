@@ -1,11 +1,8 @@
   = form_for @question do |f|
-    .input-group-addon
-      = f.label :title
+    = f.label :title
     = f.text_field :title, class: 'form-control'
-    .input-group-addon
-      = f.label :body
+    = f.label :body
     => f.text_area :body, row: 10, class: 'form-control', rows: 5
     p
     = render 'attachments/links', f: f
-    btn.btn-default
-      = f.submit 'Create'
+    = f.submit 'Create', class: 'btn btn-default'

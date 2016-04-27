@@ -1,23 +1,26 @@
 - if answer.persisted? 
-  .row.answer [id = "answer_#{answer.id}"]
-    .col-xs-1 
+  .media.answer [id = "answer_#{answer.id}"]
+    .media-left
+      = image_tag(answer.user.gravatar, alt: "avatar")
       - if answer.best
         p [id = 'best_answer'] Best
       - else 
         => link_to 'Best', make_best_answer_path(answer), method: :patch, remote: true if can?(:make_best, answer)
       .vote_answer [id = "vote_answer_#{answer.id}"]
         = render 'shared/vote_bar', object: answer
-    .col-xs-11
+    .media-body
       p = answer.body
-      p 
       ul.attachments
         = render answer.attachments
+
+      p.timestamp
+        'Answered 
+        => time_ago_in_words(answer.created_at)  
+        ' ago.
       - if can?(:manage, answer)
         => link_to 'Edit', '#', class: 'edit_answer_link', data: {answer_id: answer.id} 
         => link_to 'Delete', answer_path(answer), remote: true, method: :delete, id: "destroy_answer_#{answer.id}" 
-      'Answered 
-      => time_ago_in_words(answer.created_at)  
-      ' ago.
+
       = form_for [answer], remote: true, id: "edit_answer_#{answer.id}", data: {answer_id: answer.id}  do |f|
         .answer-errors [id = "edit_answer_#{answer.id}"] 
         .input-group-addon
@@ -26,9 +29,6 @@
         = render 'attachments/links', f: f
         btn.btn-default
           = f.submit 'Save'
-      end
       .div [id = "answer_#{answer.id}_comments"]
-        p Comments
-        .col-xs-5
-          = render 'comments/form', comment: answer.comments.new, commentable: answer
         = render answer.comments
+        = render 'comments/form', comment: answer.comments.new, commentable: answer

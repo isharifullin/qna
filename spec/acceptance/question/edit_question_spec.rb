@@ -17,11 +17,12 @@ feature 'Question editing', %q{
     end
 
     scenario 'edits his question', js: true do
-      click_link 'Edit'
-      fill_in 'Title', with: 'edited title'
-      fill_in 'Body', with: 'edited body'
-      click_on 'Save'
-
+      within ".question" do
+        click_link 'Edit'
+        fill_in 'Title', with: 'edited title'
+        fill_in 'Body', with: 'edited body'
+        click_on 'Save'
+      end
       expect(page).to_not have_content question.title 
       expect(page).to_not have_content question.body
       within '.question' do

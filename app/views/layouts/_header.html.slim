@@ -1,29 +1,24 @@
-.navbar.navbar-default
-  .container
+nav.navbar.navbar-inverse
+  .container-fluid
     .navbar-header
-      button.navbar-toggle data-target=".navbar-collapse" data-toggle="collapse" type="button" 
-        span.sr-only Toggle navigation
-        span.icon-bar
-        span.icon-bar
-        span.icon-bar
-      =link_to 'QnA', root_path, class: 'navbar-brand'
-    .collapse.navbar-collapse
-      ul.nav.navbar-nav
-        - if user_signed_in?
-          li 
-            = link_to 'Ask question', new_question_path
-          li
-            = link_to 'Sign out', destroy_user_session_path, method: :delete, id: 'sign_out_link'
-        - else
-          li
-            = link_to 'Sign in', new_user_session_path, id: 'sign_in_link'
-
-      .col-md-3.pull-right
-        - unless devise_controller?
-          = form_for SearchQuery.new, :url => {:controller => "search", :action => "index" }, class: 'navbar-form', role: 'search' do |f|
-            .input-group
-              = f.label :query_body, hidden: true
-              = f.text_field :query_body, class: 'form-control', placeholder: 'Search'
-              = f.hidden_field :query_object, value: 'All'
-              .input-group-btn
-                = f.submit 'Go', class: 'btn btn-default'
+      = link_to 'QnA', root_path, class: 'navbar-brand'
+    ul.nav.navbar-nav.navbar-right
+      - if user_signed_in?
+        li
+          = link_to 'Ask question', new_question_path
+        li
+          = link_to 'Sign out', destroy_user_session_path, method: :delete, id: 'sign_out_link'
+      - else
+        li
+          = link_to 'Sign up', new_user_registration_path, id: 'sign_up_link' 
+        li
+          = link_to 'Sign in', new_user_session_path, id: 'sign_in_link' 
+    
+    - unless devise_controller?
+      .col-sm-3.col-md-3
+        = form_for SearchQuery.new, :url => {:controller => "search", :action => "index" }, :html => {:class => 'navbar-form', :role => 'search'} do |f| 
+          .input-group
+            = f.label :query_body, hidden: true
+            = f.text_field :query_body, id: 'header_search', class: 'form-control', placeholder: 'Search'
+            .input-group-btn
+              = f.submit 'Go', class: 'btn btn-default' 

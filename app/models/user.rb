@@ -1,6 +1,4 @@
 class User < ActiveRecord::Base
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable,
          :validatable, :omniauthable, omniauth_providers: [:facebook, :twitter]
 
@@ -10,6 +8,11 @@ class User < ActiveRecord::Base
   has_many :comments, dependent: :destroy
   has_many :authorizations, dependent: :destroy
   has_many :subscriptions, dependent: :destroy
+
+  def gravatar
+    gravatar_id = Digest::MD5::hexdigest(self.email.downcase)
+    "https://secure.gravatar.com/avatar/#{gravatar_id}"
+  end
 
   def vote_for(object, value)
     vote = self.votes.new(votable: object, value: value)

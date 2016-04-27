@@ -1,6 +1,5 @@
 - if can?(:create, Comment)
   = form_for [commentable, comment], remote: true, id: "new_comment", data: { type: :json } do |f|
-    .input-group-addon
-      = f.label :body, 'Your comment'
+    = f.label :body, 'Comment'
     = f.text_field :body, class: 'form-control new_comment_form'
-    = f.submit
+    = f.submit 'Create', class: 'btn btn-default' 

@@ -18,7 +18,7 @@ feature 'Add comment for answer or question', %q{
 
     scenario 'creates comment for question', js: true do
       within "#question_#{question.id}_comments" do
-        fill_in 'Your comment', with: 'My comment'
+        fill_in 'Comment', with: 'My comment'
         click_on 'Create'
         expect(page).to have_content 'My comment'
       end
@@ -35,7 +35,7 @@ feature 'Add comment for answer or question', %q{
 
     scenario 'creates comment for answer', js: true do
       within "#answer_#{answer.id}_comments" do
-        fill_in 'Your comment', with: 'My comment'
+        fill_in 'Comment', with: 'My comment'
         click_on 'Create'
         expect(page).to have_content 'My comment'
       end

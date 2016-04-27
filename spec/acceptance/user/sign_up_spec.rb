@@ -14,7 +14,7 @@ feature 'User sign up', %q{
     fill_in 'Email', with: user_attributes[:email]
     fill_in 'Password', with: user_attributes[:password]
     fill_in 'Password confirmation', with: user_attributes[:password_confirmation]
-    click_on 'Sign up'
+    click_button 'Sign up'
 
     expect(page).to have_content 'Welcome! You have signed up successfully.'
     expect(current_path).to eq root_path
@@ -26,7 +26,7 @@ feature 'User sign up', %q{
     fill_in 'Email', with: user_attributes[:email]
     fill_in 'Password', with: user_attributes[:password]
     fill_in 'Password confirmation', with: user_attributes[:password_confirmation]
-    click_on 'Sign up'
+    click_button 'Sign up'
 
     expect(page).to have_content 'error'
   end

@@ -1,39 +1,32 @@
-.container.question
-  .row 
-    h3.media-heading { margin-left:20px; }
+.media.question
+  .media-left
+    = image_tag(question.user.gravatar, alt: "avatar")
+    .vote_question
+      = render 'shared/vote_bar', object: question
+    .subscribe_question
+      = render 'shared/subscription_bar', question: question   
+  .media-body
+    h4.media-heading 
       = question.title
-  .row 
-    .col-xs-1
-      .vote_question
-        = render 'shared/vote_bar', object: question
-      .subscribe_question
-        = render 'shared/subscription_bar', question: question
-    .col-xs-11
+    p 
       = question.body
-      p
-      ul.attachments
-        = render question.attachments
-      p
-      - if can?(:manage, question)
-
-        => link_to 'Edit', '', id: 'edit_question_link', data: {question_id: question.id} 
-        => link_to 'Delete', question_path(question), method: :delete, id: "destroy_question_link" 
+    ul.attachments
+      = render question.attachments
+    p.timestamp
       'Asked
       => time_ago_in_words(question.created_at)  
       ' ago.
-      = form_for [question], remote: true,  id: 'edit_question_#{question.id}'  do |f|
-        .question-errors
-        .input-group-addon
+      - if can?(:manage, question)
+        => link_to 'Edit', '', id: 'edit_question_link', data: {question_id: question.id} 
+        => link_to 'Delete', question_path(question), method: :delete, id: "destroy_question_link" 
+        = form_for [question], remote: true,  id: 'edit_question_#{question.id}'  do |f|
+          .question-errors
           = f.label :title
-        = f.text_field :title, class: 'form-control'
-        .input-group-addon
+          = f.text_field :title, class: 'form-control'
           = f.label :body
-        = f.text_area :body, class: 'form-control', rows: 5
-        = render 'attachments/links', f: f
-        btn.btn-default
-          = f.submit 'Save'
-      .div [id = "question_#{question.id}_comments"] 
-        p Comments
-        .col-xs-5
-          = render 'comments/form', comment: question.comments.new, commentable: question
-        = render question.comments
+          = f.text_area :body, class: 'form-control', rows: 5
+          = render 'attachments/links', f: f
+          = f.submit 'Save', class: 'btn btn-default' 
+    .div [id = "question_#{question.id}_comments"]
+      = render question.comments
+      = render 'comments/form', comment: question.comments.new, commentable: question
