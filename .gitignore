@@ -7,8 +7,9 @@
 # Ignore bundler config.
 /.bundle
 
-# Ignore database config
+# Ignore configs
 config/database.yml
+config/private_pub.yml
 
 # Ignore all logfiles and tempfiles.
 /log/*
