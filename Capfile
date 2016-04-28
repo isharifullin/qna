@@ -6,5 +6,6 @@ require 'capistrano/bundler'
 require 'capistrano/rails'
 require 'capistrano/sidekiq'
 require 'whenever/capistrano'
+require 'thinking_sphinx/capistrano'
 
 Dir.glob("lib/capistrano/tasks/*.rake").each { |r| import r }

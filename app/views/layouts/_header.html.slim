@@ -20,5 +20,6 @@ nav.navbar.navbar-inverse
           .input-group
             = f.label :query_body, hidden: true
             = f.text_field :query_body, id: 'header_search', class: 'form-control', placeholder: 'Search'
+            = f.hidden_field :query_object, value: 'All'
             .input-group-btn
               = f.submit 'Go', class: 'btn btn-default' 
