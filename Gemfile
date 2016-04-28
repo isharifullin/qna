@@ -44,6 +44,8 @@ gem 'thinking-sphinx'
 gem 'dotenv'
 gem 'dotenv-deployment', require: 'dotenv/deployment'
 
+gem 'therubyracer'
+
 group :development do
   gem 'web-console', '~> 2.0'
   gem 'spring'
