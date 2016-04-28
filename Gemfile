@@ -41,6 +41,19 @@ gem 'whenever', require: false
 gem 'mysql2'
 gem 'thinking-sphinx'
 
+gem 'dotenv'
+gem 'dotenv-deployment', require: 'dotenv/deployment'
+
+group :development do
+  gem 'web-console', '~> 2.0'
+  gem 'spring'
+  gem 'letter_opener'
+  gem 'capistrano', require: false
+  gem 'capistrano-bundler', require: false
+  gem 'capistrano-rails', require: false
+  gem 'capistrano-rvm',require: false
+end
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
@@ -53,10 +66,4 @@ group :test do
   gem 'database_cleaner'
   gem 'capybara-webkit'
   gem 'json_spec'
-end
-
-group :development do
-  gem 'web-console', '~> 2.0'
-  gem 'spring'
-  gem 'letter_opener'
 end
