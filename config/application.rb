@@ -6,6 +6,12 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+# Load defaults from config/*.env in config
+#Dotenv.load *Dir.glob(Rails.root.join("config/**/*.env"), File::FNM_DOTMATCH)
+
+# Override any existing variables if an environment-specific file exists
+#Dotenv.overload *Dir.glob(Rails.root.join("config/**/*.env.#{Rails.env}"), File::FNM_DOTMATCH)
+
 module Qna
   class Application < Rails::Application
     # Use the responders controller from the responders gem
@@ -37,5 +43,8 @@ module Qna
                         controller_spec: true
       g.ficture_replacement :factory_girl, dir: 'spec/factories'
     end
+
+    config.cache_store = :redis_store, 'redis://localhost:6379/0/cache', { expires_in: 90.minutes }
   end
 end
+
