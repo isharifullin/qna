@@ -1,8 +1,9 @@
-.questions_list
-  - @questions.each do |question|
-    = link_to question do
-      .media.question [id = "question_#{question.id}"]
-        .media-left
-          = image_tag(question.user.gravatar, alt: "avatar")
-        .media-body
-          = question.title
+- cache collection_cache_key_for :question do
+  .questions_list
+    - @questions.each do |question|
+      = link_to question do
+        .media.question [id = "question_#{question.id}"]
+          .media-left
+            = image_tag(question.user.gravatar, alt: "avatar")
+          .media-body
+            = question.title
